@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../src/screens/recipe/recipe_list.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -8,11 +9,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(
-        body: Center(
-          child: Text('hello flutter'),
-        ),
-      ),
+      initialRoute: 'recipe',
+      routes: {
+        'recipe': (context) => RecipeList(),
+      },
     );
   }
 }
