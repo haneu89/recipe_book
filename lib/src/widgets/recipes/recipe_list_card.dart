@@ -6,20 +6,35 @@ class RecipeListCard extends StatelessWidget {
   RecipeListCard(this.index);
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(2.0),
-      child: GridTile(
-        child: Image.network(
-          "http://admin.brainworld.com/Library/FileDown.aspx?filename=5p(6).jpg&filepath=Opinion",
-          fit: BoxFit.cover,
-        ),
-        footer: GridTileBar(
-          backgroundColor: Colors.black.withOpacity(0.64),
-          title: Text(
-            "레시피 번호 : $index",
-            maxLines: 2,
-            textAlign: TextAlign.center,
-          ),
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        splashColor: Colors.blue.withAlpha(30),
+        onTap: () {
+          print('Card tapped.');
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            AspectRatio(
+              aspectRatio: 18 / 11,
+              child: Image.network(
+                "https://assets3.thrillist.com/v1/image/2797371/size/tmg-article_default_mobile.jpg",
+                fit: BoxFit.fitWidth,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text('Title'),
+                  SizedBox(height: 8.0),
+                  Text('Secondary Text'),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
