@@ -12,7 +12,7 @@ class RecipeListCard extends StatelessWidget {
       child: InkWell(
         splashColor: Colors.blue.withAlpha(30),
         onTap: () {
-          print('Card tapped.');
+          Navigator.pushNamed(context, 'recipe/${index}');
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
