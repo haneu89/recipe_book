@@ -17,11 +17,6 @@ class RecipeShow extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Text(
-              'this is title Area',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
-            ),
             AspectRatio(
               aspectRatio: 18 / 11,
               child: Image.network(
@@ -30,8 +25,27 @@ class RecipeShow extends StatelessWidget {
               ),
             ),
             Panel(
-              child: Text('asdf'),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'this is title Area',
+                    textAlign: TextAlign.start,
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+                  ),
+                  Text(
+                    'sub title',
+                    textAlign: TextAlign.start,
+                  )
+                ],
+              ),
             ),
+            Panel(
+                child: Text(
+              'sub title',
+              textAlign: TextAlign.start,
+            )),
           ],
         ),
       ),
