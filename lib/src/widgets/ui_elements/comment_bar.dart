@@ -9,8 +9,8 @@ class CommentBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-          border: Border(top: BorderSide(color: Colors.black, width:0.5))),
+      // decoration: BoxDecoration(
+      //     border: Border(top: BorderSide(color: Colors.black, width:0.5))),
       child: Row(
         children: <Widget>[
           IconButton(
