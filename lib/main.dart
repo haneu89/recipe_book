@@ -8,11 +8,12 @@ void main() async {
 
   String _initialRoute = 'recipe';
 
-  var user = await _auth.currentUser();
+  FirebaseUser user = await _auth.currentUser();
+  // print(user.uid);
 
   if(user == null) {
     AuthResult authResult = await _auth.signInAnonymously();
-    print(authResult);
+    // print(authResult);
   }
 
   
