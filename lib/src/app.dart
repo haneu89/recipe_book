@@ -3,6 +3,11 @@ import '../src/screens/recipe/recipe_list.dart';
 import '../src/screens/recipe/recipe_show.dart';
 
 class MyApp extends StatelessWidget {
+
+  String initialRoute;
+
+  MyApp({this.initialRoute});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -10,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: 'recipe',
+      initialRoute: initialRoute,
       routes: {
         'recipe': (context) => RecipeList(),
       },
