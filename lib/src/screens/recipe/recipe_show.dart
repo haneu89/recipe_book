@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../widgets/ui_elements/elements.dart';
 
+import '../../widgets/ui_elements/comment_bar.dart';
+
 class RecipeShow extends StatelessWidget {
+  final _commentContentController = TextEditingController();
   String recipeId;
 
   RecipeShow(this.recipeId);
@@ -12,7 +15,20 @@ class RecipeShow extends StatelessWidget {
       appBar: AppBar(
         title: Text('$recipeId 레시피 '),
       ),
-      body: Container(
+      body: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Expanded(
+          child: _recipeDetail(),
+        ),
+        CommentBar(() {}, _commentContentController),
+      ],
+    ),
+    );
+  }
+
+  Widget _recipeDetail() {
+    return Container(
         color: Colors.black12,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -48,7 +64,6 @@ class RecipeShow extends StatelessWidget {
             )),
           ],
         ),
-      ),
-    );
+      );
   }
 }
