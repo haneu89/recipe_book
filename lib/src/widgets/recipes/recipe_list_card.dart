@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class RecipeListCard extends StatelessWidget {
-  int index;
+  String index;
 
   RecipeListCard(this.index);
   
