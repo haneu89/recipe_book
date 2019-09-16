@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+export 'package:cloud_firestore/cloud_firestore.dart';
 
 final String _doc = 'recipes';
 
