@@ -29,7 +29,7 @@ class RecipeListCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('Title'),
+                  Text(index),
                   SizedBox(height: 8.0),
                   Text('Secondary Text'),
                   Divider(),
