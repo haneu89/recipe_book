@@ -12,4 +12,6 @@ class RecipeFireResource {
 
   Stream<QuerySnapshot> get getItemList => Firestore.instance.collection(_doc).snapshots();
 
+  Stream<DocumentSnapshot> getItemOne(docId) => Firestore.instance.collection(_doc).document(docId).snapshots();
+
 }
