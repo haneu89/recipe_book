@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RecipeListCard extends StatelessWidget {
-  String index;
+  DocumentSnapshot index;
 
   RecipeListCard(this.index);
   
   @override
   Widget build(BuildContext context) {
+
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         splashColor: Colors.blue.withAlpha(30),
         onTap: () {
-          Navigator.pushNamed(context, 'recipe/${index}');
+          Navigator.pushNamed(context, 'recipe/${index.documentID}');
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -20,7 +22,7 @@ class RecipeListCard extends StatelessWidget {
             AspectRatio(
               aspectRatio: 18 / 11,
               child: Image.network(
-                "https://assets3.thrillist.com/v1/image/2797371/size/tmg-article_default_mobile.jpg",
+                index['image'],
                 fit: BoxFit.fitWidth,
               ),
             ),
@@ -29,7 +31,7 @@ class RecipeListCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(index),
+                  Text(index['title']),
                   SizedBox(height: 8.0),
                   Text('Secondary Text'),
                   Divider(),

@@ -31,7 +31,7 @@ class RecipeList extends StatelessWidget {
                 crossAxisCount: 2,
                 childAspectRatio: (itemWidth / itemHeight),
                 children: snapshot.data.documents.map((DocumentSnapshot document) {
-                  return RecipeListCard(document['title']);
+                  return RecipeListCard(document);
                 }).toList(),
                 // children: List.generate(100, (index) {
                 //   return RecipeListCard(index);
