@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recipe_book/src/resources/comment_fire_resource.dart';
 import '../../widgets/ui_elements/elements.dart';
 
 import '../../widgets/ui_elements/comment_bar.dart';
@@ -6,6 +7,8 @@ import '../../resources/recipe_fire_resource.dart';
 
 class RecipeShow extends StatelessWidget {
   RecipeFireResource resource = RecipeFireResource();
+  CommentFireResource commentResource = CommentFireResource();
+  
 
   final _commentContentController = TextEditingController();
   String recipeId;
@@ -32,7 +35,7 @@ class RecipeShow extends StatelessWidget {
                 Expanded(
                   child: _recipeDetail(snapshot),
                 ),
-                CommentBar(() {}, _commentContentController),
+                CommentBar(() {_commentWrite(context);}, _commentContentController),
               ],
             ),
           );
@@ -76,5 +79,20 @@ class RecipeShow extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _commentWrite(context) {
+    CommentModel comment = CommentModel.fromJson({
+      "target" : recipeId,
+      'content': _commentContentController.text
+    });
+    commentResource.createComment = comment;
+
+    _commentContentController.text = '';
+    FocusScope.of(context).requestFocus(new FocusNode());
+
+    
+
+
   }
 }
