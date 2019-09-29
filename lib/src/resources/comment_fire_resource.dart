@@ -21,7 +21,10 @@ class CommentFireResource {
   } 
   
   Stream<QuerySnapshot> getComments(String target) {
-    return Firestore.instance.collection(_doc).where('target', isEqualTo: target).snapshots();
+    return Firestore.instance.collection(_doc)
+      .where('target', isEqualTo: target)
+      // .orderBy('createdAt', descending: true)
+      .snapshots();
   }
 
 
