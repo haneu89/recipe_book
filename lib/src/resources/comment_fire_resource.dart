@@ -12,6 +12,10 @@ class CommentFireResource {
   CommentFireResource._internal();
 
   set createComment(CommentModel comment) => Firestore.instance.collection(_doc).add(comment.toJson());
+  
+  Stream<QuerySnapshot> getComments(String target) {
+    return Firestore.instance.collection(_doc).where('target', isEqualTo: target).snapshots();
+  }
 
 
 }

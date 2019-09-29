@@ -5,20 +5,25 @@ import '../../widgets/ui_elements/elements.dart';
 import '../../widgets/ui_elements/comment_bar.dart';
 import '../../resources/recipe_fire_resource.dart';
 
-class RecipeShow extends StatelessWidget {
-  RecipeFireResource resource = RecipeFireResource();
-  CommentFireResource commentResource = CommentFireResource();
-  
-
-  final _commentContentController = TextEditingController();
+class RecipeShow extends StatefulWidget {
   String recipeId;
 
   RecipeShow(this.recipeId);
 
   @override
+  _RecipeShowState createState() => _RecipeShowState();
+}
+
+class _RecipeShowState extends State<RecipeShow> {
+  RecipeFireResource resource = RecipeFireResource();
+  CommentFireResource commentResource = CommentFireResource();
+  final _commentContentController = TextEditingController();
+  final children = <Widget>[];
+
+  @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
-        stream: resource.getItemOne(recipeId),
+        stream: resource.getItemOne(widget.recipeId),
         builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (!snapshot.hasData) {
             return Center(
@@ -33,12 +38,36 @@ class RecipeShow extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Expanded(
-                  child: _recipeDetail(snapshot),
+                  child: _buildCustomList(context, snapshot),
                 ),
-                CommentBar(() {_commentWrite(context);}, _commentContentController),
+                CommentBar(() {
+                  _commentWrite(context);
+                }, _commentContentController),
               ],
             ),
           );
+        });
+  }
+
+  Widget _buildCustomList(context, snapshot) {
+    children.add(_recipeDetail(snapshot));
+
+    return StreamBuilder<QuerySnapshot>(
+        stream: commentResource.getComments(widget.recipeId),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snap) {
+          if (!snap.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          
+          List<ListTile> commentList = snap.data.documents.map((DocumentSnapshot document) {
+            return ListTile(
+              title: Text('${document['content']}'),
+            );
+          }).toList();
+          children.addAll(commentList);
+          return ListView(children: children);
         });
   }
 
@@ -82,17 +111,11 @@ class RecipeShow extends StatelessWidget {
   }
 
   void _commentWrite(context) {
-    CommentModel comment = CommentModel.fromJson({
-      "target" : recipeId,
-      'content': _commentContentController.text
-    });
+    CommentModel comment = CommentModel.fromJson(
+        {"target": widget.recipeId, 'content': _commentContentController.text});
     commentResource.createComment = comment;
 
     _commentContentController.text = '';
     FocusScope.of(context).requestFocus(new FocusNode());
-
-    
-
-
   }
 }
