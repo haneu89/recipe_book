@@ -3,6 +3,7 @@ class CommentModel {
   String id;
   String content;
   String userId;
+  dynamic createdAt;
   
   CommentModel.fromJson(Map<String, dynamic> parsedJson) {
     target = parsedJson['target'];
@@ -20,6 +21,8 @@ class CommentModel {
     return {
       "target": target,
       "content": content,
+      "userId": userId,
+      "createdAt": createdAt,
     };
   }
 }
