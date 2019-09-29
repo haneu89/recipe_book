@@ -11,7 +11,7 @@ class CommentFireResource {
   factory CommentFireResource() => _resource;
   CommentFireResource._internal();
 
-  set createComment(CommentModel comment) => Firestore.instance.collection(_doc).add(comment.toJson());
+  Future<DocumentReference> createComment(CommentModel comment) => Firestore.instance.collection(_doc).add(comment.toJson());
   
   Stream<QuerySnapshot> getComments(String target) {
     return Firestore.instance.collection(_doc).where('target', isEqualTo: target).snapshots();

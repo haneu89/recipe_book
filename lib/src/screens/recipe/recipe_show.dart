@@ -18,7 +18,6 @@ class _RecipeShowState extends State<RecipeShow> {
   RecipeFireResource resource = RecipeFireResource();
   CommentFireResource commentResource = CommentFireResource();
   final _commentContentController = TextEditingController();
-  final children = <Widget>[];
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +49,7 @@ class _RecipeShowState extends State<RecipeShow> {
   }
 
   Widget _buildCustomList(context, snapshot) {
+    final children = <Widget>[];
     children.add(_recipeDetail(snapshot));
 
     return StreamBuilder<QuerySnapshot>(
@@ -60,8 +60,9 @@ class _RecipeShowState extends State<RecipeShow> {
               child: CircularProgressIndicator(),
             );
           }
-          
-          List<ListTile> commentList = snap.data.documents.map((DocumentSnapshot document) {
+
+          List<ListTile> commentList =
+              snap.data.documents.map((DocumentSnapshot document) {
             return ListTile(
               title: Text('${document['content']}'),
             );
@@ -110,10 +111,11 @@ class _RecipeShowState extends State<RecipeShow> {
     );
   }
 
-  void _commentWrite(context) {
+  void _commentWrite(context) async {
     CommentModel comment = CommentModel.fromJson(
         {"target": widget.recipeId, 'content': _commentContentController.text});
-    commentResource.createComment = comment;
+     DocumentReference docref = await commentResource.createComment(comment);
+    //  print(docref.documentID);
 
     _commentContentController.text = '';
     FocusScope.of(context).requestFocus(new FocusNode());
