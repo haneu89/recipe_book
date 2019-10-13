@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:recipe_book/src/models/recipe_model.dart';
 
 class RecipeListCard extends StatelessWidget {
-  DocumentSnapshot index;
+  RecipeModel snapshot;
 
-  RecipeListCard(this.index);
+  RecipeListCard(this.snapshot);
   
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class RecipeListCard extends StatelessWidget {
       child: InkWell(
         splashColor: Colors.blue.withAlpha(30),
         onTap: () {
-          Navigator.pushNamed(context, 'recipe/${index.documentID}');
+          Navigator.pushNamed(context, 'recipe/${snapshot.id}');
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -22,7 +23,7 @@ class RecipeListCard extends StatelessWidget {
             AspectRatio(
               aspectRatio: 18 / 11,
               child: Image.network(
-                index['image'],
+                snapshot.image,
                 fit: BoxFit.fitWidth,
               ),
             ),
@@ -31,7 +32,7 @@ class RecipeListCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(index['title']),
+                  Text(snapshot.title),
                   SizedBox(height: 8.0),
                   Text('Secondary Text'),
                   Divider(),
@@ -44,7 +45,7 @@ class RecipeListCard extends StatelessWidget {
                       SizedBox(width: 5,),
                       Icon(Icons.comment, color: Colors.black, size: 12,),
                       SizedBox(width: 5,),
-                      Text("8", style: TextStyle(color: Colors.black),),
+                      Text("${snapshot.comment_count}", style: TextStyle(color: Colors.black),),
                       SizedBox(width: 5,),
                       Icon(Icons.favorite_border, color: Colors.black, size: 12,),
                       SizedBox(width: 5,),

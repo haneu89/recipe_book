@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recipe_book/src/models/recipe_model.dart';
 import '../../widgets/recipes/recipe_list_card.dart';
 import '../../resources/recipe_fire_resource.dart';
 
@@ -31,7 +32,8 @@ class RecipeList extends StatelessWidget {
                 crossAxisCount: 2,
                 childAspectRatio: (itemWidth / itemHeight),
                 children: snapshot.data.documents.map((DocumentSnapshot document) {
-                  return RecipeListCard(document);
+                  RecipeModel recipe = RecipeModel.fromSnapshot(document);
+                  return RecipeListCard(recipe);
                 }).toList(),
                 // children: List.generate(100, (index) {
                 //   return RecipeListCard(index);

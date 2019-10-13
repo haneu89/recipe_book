@@ -114,8 +114,8 @@ class _RecipeShowState extends State<RecipeShow> {
   void _commentWrite(context) async {
     CommentModel comment = CommentModel.fromJson(
         {"target": widget.recipeId, 'content': _commentContentController.text});
-     DocumentReference docref = await commentResource.createComment(comment);
-    //  print(docref.documentID);
+    DocumentReference docref = await commentResource.createComment(comment);
+    resource.attachComment(widget.recipeId, docref.documentID);
 
     _commentContentController.text = '';
     FocusScope.of(context).requestFocus(new FocusNode());

@@ -14,8 +14,10 @@ class RecipeFireResource {
 
   Stream<DocumentSnapshot> getItemOne(docId) => Firestore.instance.collection(_doc).document(docId).snapshots();
 
-  test(String docId, String commendId) {
-    Firestore.instance.collection(_doc).document(docId).updateData({'comments': commendId});
+  attachComment(String docId, String commendId) {
+    Firestore.instance.collection(_doc).document(docId).updateData({
+      'comments': FieldValue.arrayUnion([commendId])
+    });
   }
 
 }
