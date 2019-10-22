@@ -33,6 +33,11 @@ class _RecipeShowState extends State<RecipeShow> {
             appBar: AppBar(
               title: Text('${snapshot.data['title']}'),
             ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {},
+              child: Icon(Icons.favorite_border),
+              backgroundColor: Colors.blue,
+            ),
             body: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
