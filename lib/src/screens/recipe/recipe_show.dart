@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_book/src/resources/comment_fire_resource.dart';
+import '../../widgets/ui_elements/ui_element.dart';
 import '../../widgets/ui_elements/elements.dart';
 
 import '../../widgets/ui_elements/comment_bar.dart';
 import '../../resources/recipe_fire_resource.dart';
+import '../../resources/favorite_fire_resource.dart';
 
 class RecipeShow extends StatefulWidget {
   String recipeId;
@@ -17,6 +19,8 @@ class RecipeShow extends StatefulWidget {
 class _RecipeShowState extends State<RecipeShow> {
   RecipeFireResource resource = RecipeFireResource();
   CommentFireResource commentResource = CommentFireResource();
+  FavoriteFireResource favoriteResource = FavoriteFireResource();
+  
   final _commentContentController = TextEditingController();
 
   @override
@@ -25,9 +29,7 @@ class _RecipeShowState extends State<RecipeShow> {
         stream: resource.getItemOne(widget.recipeId),
         builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+            return Spinner();
           }
           return Scaffold(
             appBar: AppBar(

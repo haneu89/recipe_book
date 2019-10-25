@@ -23,7 +23,6 @@ class FavoriteFireResource {
   Stream<QuerySnapshot> getFavorites(String target) {
     return Firestore.instance.collection(_doc)
       .where('target', isEqualTo: target)
-      // .orderBy('createdAt', descending: true)
       .snapshots();
   }
 
