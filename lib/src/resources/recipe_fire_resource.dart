@@ -12,17 +12,21 @@ class RecipeFireResource {
 
   Stream<QuerySnapshot> get getItemList => Firestore.instance.collection(_doc).snapshots();
 
-  Stream<DocumentSnapshot> getItemOne(docId) => Firestore.instance.collection(_doc).document(docId).snapshots();
+  Stream<DocumentSnapshot> getItemOne(recipeId) => Firestore.instance.collection(_doc).document(recipeId).snapshots();
 
-  attachComment(String docId, String commendId) {
-    Firestore.instance.collection(_doc).document(docId).updateData({
-      'comments': FieldValue.arrayUnion([commendId])
+  attachComment(String recipeId, String commentId) {
+    Firestore.instance.collection(_doc).document(recipeId).updateData({
+      'comments': FieldValue.arrayUnion([commentId])
     });
   }
-  attachFavorite(String docId, String commendId) {
-    Firestore.instance.collection(_doc).document(docId).updateData({
-      'favorits': FieldValue.arrayUnion([commendId])
+  attachFavorite(String recipeId, String favoriteId) {
+    Firestore.instance.collection(_doc).document(recipeId).updateData({
+      'favorits': FieldValue.arrayUnion([favoriteId])
     });
   }
-
+  detachFavorite(String recipeId, String favoriteId) {
+    Firestore.instance.collection(_doc).document(recipeId).updateData({
+      'favorits': FieldValue.arrayRemove([favoriteId])
+    });
+  }
 }

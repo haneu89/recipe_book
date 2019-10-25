@@ -17,16 +17,21 @@ class FavoriteFireResource {
 
   RecipeFireResource recipeResource = RecipeFireResource();
 
-  Future<DocumentReference> addFavorite(String documentId) async {
+  Future<DocumentReference> addFavorite(String recipeId) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    FavoriteModel favorite = FavoriteModel.fromJson({ 'target' : documentId });
+    FavoriteModel favorite = FavoriteModel.fromJson({ 'target' : recipeId });
     favorite.userId = user.uid;
     favorite.createdAt = DateTime.now();
     
     DocumentReference favRef = await Firestore.instance.collection(_doc).add(favorite.toJson());
-    recipeResource.attachFavorite(documentId, favRef.documentID);
+    recipeResource.attachFavorite(recipeId, favRef.documentID);
     return favRef;
-  } 
+  }
+
+  void removeFavorite(String recipeId, String favoriteId) async {
+      await Firestore.instance.collection(_doc).document(favoriteId).delete();
+      recipeResource.detachFavorite(recipeId, favoriteId);
+  }
   
   Stream<QuerySnapshot> getFavorites(String target) {
     return Firestore.instance.collection(_doc)
