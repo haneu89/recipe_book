@@ -45,11 +45,11 @@ class RecipeListCard extends StatelessWidget {
                       SizedBox(width: 5,),
                       Icon(Icons.comment, color: Colors.black, size: 12,),
                       SizedBox(width: 5,),
-                      Text("${snapshot.comment_count}", style: TextStyle(color: Colors.black),),
+                      Text("${snapshot.commentCount}", style: TextStyle(color: Colors.black),),
                       SizedBox(width: 5,),
                       Icon(Icons.favorite_border, color: Colors.black, size: 12,),
                       SizedBox(width: 5,),
-                      Text("8", style: TextStyle(color: Colors.black),),
+                      Text("${snapshot.favoriteCount}", style: TextStyle(color: Colors.black),),
                     ],
                   )
                 ],
