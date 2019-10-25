@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/comment_model.dart';
+import '../models/favorite_model.dart';
+
 export 'package:cloud_firestore/cloud_firestore.dart';
-export '../models/comment_model.dart';
+export '../models/favorite_model.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import './recipe_fire_resource.dart';
 
 final String _doc = 'favorits';
 
@@ -13,11 +15,17 @@ class FavoriteFireResource {
   factory FavoriteFireResource() => _resource;
   FavoriteFireResource._internal();
 
-  Future<DocumentReference> createFavorite(CommentModel comment) async {
+  RecipeFireResource recipeResource = RecipeFireResource();
+
+  Future<DocumentReference> addFavorite(String documentId) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    comment.userId = user.uid;
-    comment.createdAt = DateTime.now();
-    return Firestore.instance.collection(_doc).add(comment.toJson());
+    FavoriteModel favorite = FavoriteModel.fromJson({ 'target' : documentId });
+    favorite.userId = user.uid;
+    favorite.createdAt = DateTime.now();
+    
+    DocumentReference favRef = await Firestore.instance.collection(_doc).add(favorite.toJson());
+    recipeResource.attachFavorite(documentId, favRef.documentID);
+    return favRef;
   } 
   
   Stream<QuerySnapshot> getFavorites(String target) {

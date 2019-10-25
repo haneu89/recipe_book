@@ -4,6 +4,7 @@ export 'package:cloud_firestore/cloud_firestore.dart';
 export '../models/comment_model.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import './recipe_fire_resource.dart';
 
 final String _doc = 'comments';
 
@@ -13,11 +14,20 @@ class CommentFireResource {
   factory CommentFireResource() => _resource;
   CommentFireResource._internal();
 
+  RecipeFireResource recipeResource = RecipeFireResource();
+
+
   Future<DocumentReference> createComment(CommentModel comment) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     comment.userId = user.uid;
     comment.createdAt = DateTime.now();
-    return Firestore.instance.collection(_doc).add(comment.toJson());
+
+    DocumentReference comRef = await Firestore.instance.collection(_doc).add(comment.toJson());
+    recipeResource.attachFavorite(comment.id, comRef.documentID);
+
+    return comRef;
+
+
   } 
   
   Stream<QuerySnapshot> getComments(String target) {

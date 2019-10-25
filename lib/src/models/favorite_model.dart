@@ -1,14 +1,14 @@
-class CommentModel {
+class FavoriteModel {
   String target;
   String id;
   String userId;
   dynamic createdAt;
   
-  CommentModel.fromJson(Map<String, dynamic> parsedJson) {
+  FavoriteModel.fromJson(Map<String, dynamic> parsedJson) {
     target = parsedJson['target'];
   }
 
-  CommentModel.fromSnapshot(dynamic snapshot) {
+  FavoriteModel.fromSnapshot(dynamic snapshot) {
     target = snapshot.target;
     id = snapshot.documentID;
     userId = snapshot['userId'];

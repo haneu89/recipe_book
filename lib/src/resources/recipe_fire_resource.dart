@@ -19,5 +19,10 @@ class RecipeFireResource {
       'comments': FieldValue.arrayUnion([commendId])
     });
   }
+  attachFavorite(String docId, String commendId) {
+    Firestore.instance.collection(_doc).document(docId).updateData({
+      'favorits': FieldValue.arrayUnion([commendId])
+    });
+  }
 
 }

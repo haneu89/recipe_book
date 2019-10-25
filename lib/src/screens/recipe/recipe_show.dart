@@ -20,7 +20,7 @@ class _RecipeShowState extends State<RecipeShow> {
   RecipeFireResource resource = RecipeFireResource();
   CommentFireResource commentResource = CommentFireResource();
   FavoriteFireResource favoriteResource = FavoriteFireResource();
-  
+
   final _commentContentController = TextEditingController();
 
   @override
@@ -31,27 +31,37 @@ class _RecipeShowState extends State<RecipeShow> {
           if (!snapshot.hasData) {
             return Spinner();
           }
-          return Scaffold(
-            appBar: AppBar(
-              title: Text('${snapshot.data['title']}'),
-            ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {},
-              child: Icon(Icons.favorite_border),
-              backgroundColor: Colors.blue,
-            ),
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(
-                  child: _buildCustomList(context, snapshot),
-                ),
-                CommentBar(() {
-                  _commentWrite(context);
-                }, _commentContentController),
-              ],
-            ),
-          );
+          return StreamBuilder<QuerySnapshot>(
+              stream: favoriteResource.getFavorites(widget.recipeId),
+              builder: (context, AsyncSnapshot<QuerySnapshot> favSnapshot) {
+                if (!favSnapshot.hasData) {
+                  return Spinner();
+                }
+                int favCount = favSnapshot.data.documents.length;
+                return Scaffold(
+                  appBar: AppBar(
+                    title: Text('${snapshot.data['title']}'),
+                  ),
+                  floatingActionButton: FloatingActionButton(
+                    onPressed: () {
+                      (favCount == 0) ? favoriteResource.addFavorite(widget.recipeId) : print('rm');
+                    },  
+                    child: (favCount == 0) ? Icon(Icons.favorite_border) :  Icon(Icons.favorite),
+                    backgroundColor: Colors.blue,
+                  ),
+                  body: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        child: _buildCustomList(context, snapshot),
+                      ),
+                      CommentBar(() {
+                        _commentWrite(context);
+                      }, _commentContentController),
+                    ],
+                  ),
+                );
+              });
         });
   }
 
@@ -121,8 +131,7 @@ class _RecipeShowState extends State<RecipeShow> {
   void _commentWrite(context) async {
     CommentModel comment = CommentModel.fromJson(
         {"target": widget.recipeId, 'content': _commentContentController.text});
-    DocumentReference docref = await commentResource.createComment(comment);
-    resource.attachComment(widget.recipeId, docref.documentID);
+    commentResource.createComment(comment);
 
     _commentContentController.text = '';
     FocusScope.of(context).requestFocus(new FocusNode());
