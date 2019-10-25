@@ -44,7 +44,7 @@ class _RecipeShowState extends State<RecipeShow> {
                   ),
                   floatingActionButton: FloatingActionButton(
                     onPressed: () {
-                      (favCount == 0) ? favoriteResource.addFavorite(widget.recipeId) : print('rm');
+                      (favCount == 0) ? favoriteResource.addFavorite(widget.recipeId) : favoriteResource.removeFavorite(widget.recipeId, favSnapshot.data.documents[0].documentID);
                     },  
                     child: (favCount == 0) ? Icon(Icons.favorite_border) :  Icon(Icons.favorite),
                     backgroundColor: Colors.blue,
