@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../src/screens/recipe/recipe_list.dart';
 import '../src/screens/recipe/recipe_show.dart';
+import '../src/screens/bookmark/bookmark_list.dart';
+
 
 class MyApp extends StatelessWidget {
 
@@ -18,6 +20,7 @@ class MyApp extends StatelessWidget {
       initialRoute: initialRoute,
       routes: {
         'recipe': (context) => RecipeList(),
+        'bookmark': (context) => BookMarkList(),
       },
       onGenerateRoute: _onGeneratedRoute,
     );
