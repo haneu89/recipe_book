@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 
 class RecipeDrawer extends StatelessWidget {
   const RecipeDrawer({Key key}) : super(key: key);
@@ -31,6 +30,12 @@ class RecipeDrawer extends StatelessWidget {
     );
 
   }
+  
+  /**
+   * 라우트 체크
+   * 이동하려는 라우트가 현제 라우트와 동일하면 Drawer를 닫아주고
+   * 상이하면 라우트 이동
+   */
   void _moveRoute(context, String targetRoute) {
       String currentRoute = ModalRoute.of(context).settings.name;
       (currentRoute == targetRoute) ? Navigator.pop(context) : Navigator.pushReplacementNamed(context, targetRoute);
