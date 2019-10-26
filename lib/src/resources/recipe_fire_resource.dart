@@ -19,6 +19,11 @@ class RecipeFireResource {
       'comments': FieldValue.arrayUnion([commentId])
     });
   }
+  detachComment(String recipeId, String commentId) {
+    Firestore.instance.collection(_doc).document(recipeId).updateData({
+      'comments': FieldValue.arrayRemove([commentId])
+    });
+  }
   attachFavorite(String recipeId, String favoriteId) {
     Firestore.instance.collection(_doc).document(recipeId).updateData({
       'favorits': FieldValue.arrayUnion([favoriteId])

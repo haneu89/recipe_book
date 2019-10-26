@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:recipe_book/src/models/recipe_model.dart';
 
 class RecipeListCard extends StatelessWidget {
@@ -47,7 +46,7 @@ class RecipeListCard extends StatelessWidget {
                       SizedBox(width: 5,),
                       Text("${snapshot.commentCount}", style: TextStyle(color: Colors.black),),
                       SizedBox(width: 5,),
-                      Icon(Icons.favorite_border, color: Colors.black, size: 12,),
+                      Icon(Icons.bookmark_border, color: Colors.black, size: 12,),
                       SizedBox(width: 5,),
                       Text("${snapshot.favoriteCount}", style: TextStyle(color: Colors.black),),
                     ],

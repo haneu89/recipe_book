@@ -41,13 +41,19 @@ class _RecipeShowState extends State<RecipeShow> {
                 return Scaffold(
                   appBar: AppBar(
                     title: Text('${snapshot.data['title']}'),
-                  ),
-                  floatingActionButton: FloatingActionButton(
-                    onPressed: () {
-                      (favCount == 0) ? favoriteResource.addFavorite(widget.recipeId) : favoriteResource.removeFavorite(widget.recipeId, favSnapshot.data.documents[0].documentID);
-                    },  
-                    child: (favCount == 0) ? Icon(Icons.favorite_border) :  Icon(Icons.favorite),
-                    backgroundColor: Colors.blue,
+                    actions: <Widget>[
+                      IconButton(
+                        onPressed: () {
+                          (favCount == 0)
+                              ? favoriteResource.addFavorite(widget.recipeId)
+                              : favoriteResource.removeFavorite(widget.recipeId,
+                                  favSnapshot.data.documents[0].documentID);
+                        },
+                        icon: (favCount == 0)
+                            ? Icon(Icons.bookmark_border)
+                            : Icon(Icons.bookmark)
+                      )
+                    ],
                   ),
                   body: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
