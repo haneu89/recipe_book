@@ -11,8 +11,11 @@ class RecipeFireResource {
   RecipeFireResource._internal();
 
   Stream<QuerySnapshot> get getItemList => Firestore.instance.collection(_doc).snapshots();
+  
+  Stream<QuerySnapshot> get getBookMarkList => Firestore.instance.collection(_doc).snapshots();
 
   Stream<DocumentSnapshot> getItemOne(recipeId) => Firestore.instance.collection(_doc).document(recipeId).snapshots();
+
 
   attachComment(String recipeId, String commentId) {
     Firestore.instance.collection(_doc).document(recipeId).updateData({

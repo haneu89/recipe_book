@@ -139,7 +139,9 @@ class _RecipeShowState extends State<RecipeShow> {
         {"target": widget.recipeId, 'content': _commentContentController.text});
     commentResource.createComment(comment);
 
+    // 텍스트 제거
     _commentContentController.text = '';
+    // Focus 해제
     FocusScope.of(context).requestFocus(new FocusNode());
   }
 }

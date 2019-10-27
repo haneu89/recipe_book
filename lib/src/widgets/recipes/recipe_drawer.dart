@@ -5,11 +5,23 @@ class RecipeDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return Drawer(
-      child: SafeArea(
-          child: Column(
+      child: ListView(
+        padding: EdgeInsets.zero,
         children: <Widget>[
+          UserAccountsDrawerHeader(
+            accountEmail: Text('mail@jinhyung.kim'),
+            accountName: Text('jinhyung kim'),
+            currentAccountPicture: CircleAvatar(
+              backgroundColor: Theme.of(context).platform == TargetPlatform.iOS
+                  ? Colors.blue
+                  : Colors.white,
+              child: Text(
+                "A",
+                style: TextStyle(fontSize: 40.0),
+              ),
+            ),
+          ),
           ListTile(
             leading: Icon(Icons.bookmark_border),
             title: Text('메인화면'),
@@ -22,22 +34,22 @@ class RecipeDrawer extends StatelessWidget {
             title: Text('즐겨찾기 보기'),
             onTap: () {
               _moveRoute(context, 'bookmark');
-              
             },
           ),
         ],
-      )),
+      ),
     );
-
   }
-  
+
   /**
    * 라우트 체크
    * 이동하려는 라우트가 현제 라우트와 동일하면 Drawer를 닫아주고
    * 상이하면 라우트 이동
    */
   void _moveRoute(context, String targetRoute) {
-      String currentRoute = ModalRoute.of(context).settings.name;
-      (currentRoute == targetRoute) ? Navigator.pop(context) : Navigator.pushReplacementNamed(context, targetRoute);
-    }
+    String currentRoute = ModalRoute.of(context).settings.name;
+    (currentRoute == targetRoute)
+        ? Navigator.pop(context)
+        : Navigator.pushReplacementNamed(context, targetRoute);
+  }
 }
