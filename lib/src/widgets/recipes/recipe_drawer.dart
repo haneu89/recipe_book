@@ -36,6 +36,21 @@ class RecipeDrawer extends StatelessWidget {
               _moveRoute(context, 'bookmark');
             },
           ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.account_circle),
+            title: Text('Account'),
+            onTap: () {
+              _moveRoute(context, 'bookmark');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text('Setting'),
+            onTap: () {
+              _moveRoute(context, 'bookmark');
+            },
+          ),
         ],
       ),
     );

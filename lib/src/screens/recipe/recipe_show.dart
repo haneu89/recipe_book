@@ -8,7 +8,7 @@ import '../../resources/recipe_fire_resource.dart';
 import '../../resources/favorite_fire_resource.dart';
 
 class RecipeShow extends StatefulWidget {
-  String recipeId;
+  final String recipeId;
 
   RecipeShow(this.recipeId);
 

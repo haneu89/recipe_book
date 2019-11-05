@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:recipe_book/src/models/recipe_model.dart';
 
 class RecipeListCard extends StatelessWidget {
-  RecipeModel snapshot;
+  final RecipeModel snapshot;
 
   RecipeListCard(this.snapshot);
   
