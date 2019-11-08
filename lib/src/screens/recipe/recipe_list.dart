@@ -6,14 +6,14 @@ import '../../widgets/recipes/recipe_drawer.dart';
 
 class RecipeList extends StatelessWidget {
   final RecipeFireResource resource = RecipeFireResource();
-
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
     // final double itemHeight = (size.height - kToolbarHeight - 24) / 2.5;
-    final double itemHeight = 205;
+    // final double itemHeight = 205;
     final double itemWidth = size.width / 2;
+    final double itemHeight = itemWidth / 18 * 11 + 95;
 
     return Scaffold(
       drawer: RecipeDrawer(),
