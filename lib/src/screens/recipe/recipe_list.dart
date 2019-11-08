@@ -5,7 +5,7 @@ import '../../resources/recipe_fire_resource.dart';
 import '../../widgets/recipes/recipe_drawer.dart';
 
 class RecipeList extends StatelessWidget {
-  RecipeFireResource resource = RecipeFireResource();
+  final RecipeFireResource resource = RecipeFireResource();
 
   @override
   Widget build(BuildContext context) {

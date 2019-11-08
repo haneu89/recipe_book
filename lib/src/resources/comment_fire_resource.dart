@@ -23,7 +23,7 @@ class CommentFireResource {
     comment.createdAt = DateTime.now();
 
     DocumentReference comRef = await Firestore.instance.collection(_doc).add(comment.toJson());
-    recipeResource.attachFavorite(comment.id, comRef.documentID);
+    recipeResource.attachComment(comment.id, comRef.documentID);
 
     return comRef;
 

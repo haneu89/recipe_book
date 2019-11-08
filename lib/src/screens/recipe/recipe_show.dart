@@ -6,6 +6,7 @@ import '../../widgets/ui_elements/elements.dart';
 import '../../widgets/ui_elements/comment_bar.dart';
 import '../../resources/recipe_fire_resource.dart';
 import '../../resources/favorite_fire_resource.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class RecipeShow extends StatefulWidget {
   final String recipeId;
@@ -20,8 +21,23 @@ class _RecipeShowState extends State<RecipeShow> {
   RecipeFireResource resource = RecipeFireResource();
   CommentFireResource commentResource = CommentFireResource();
   FavoriteFireResource favoriteResource = FavoriteFireResource();
+  String uid;
 
   final _commentContentController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _getUser();
+  }
+
+  _getUser() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    setState(() {
+      uid = user.uid;
+      print(uid);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,28 +47,28 @@ class _RecipeShowState extends State<RecipeShow> {
           if (!snapshot.hasData) {
             return Spinner();
           }
-          return StreamBuilder<QuerySnapshot>(
-              stream: favoriteResource.getFavorites(widget.recipeId),
-              builder: (context, AsyncSnapshot<QuerySnapshot> favSnapshot) {
+          return StreamBuilder<DocumentSnapshot>(
+              stream: favoriteResource.getOwnFavorites(widget.recipeId, uid),
+              builder: (context, AsyncSnapshot<DocumentSnapshot> favSnapshot) {
                 if (!favSnapshot.hasData) {
                   return Spinner();
                 }
-                int favCount = favSnapshot.data.documents.length;
+                List favoritList = favSnapshot.data.data['favorits'] ?? [];
+                bool isAlreadyFav = favoritList.contains(uid);
                 return Scaffold(
                   appBar: AppBar(
                     title: Text('${snapshot.data['title']}'),
                     actions: <Widget>[
                       IconButton(
-                        onPressed: () {
-                          (favCount == 0)
-                              ? favoriteResource.addFavorite(widget.recipeId)
-                              : favoriteResource.removeFavorite(widget.recipeId,
-                                  favSnapshot.data.documents[0].documentID);
-                        },
-                        icon: (favCount == 0)
-                            ? Icon(Icons.bookmark_border)
-                            : Icon(Icons.bookmark)
-                      )
+                          onPressed: () {
+                            (isAlreadyFav)
+                                ? favoriteResource
+                                    .removeFavorite(widget.recipeId)
+                                : favoriteResource.addFavorite(widget.recipeId);
+                          },
+                          icon: (isAlreadyFav)
+                              ? Icon(Icons.bookmark)
+                              : Icon(Icons.bookmark_border))
                     ],
                   ),
                   body: Column(

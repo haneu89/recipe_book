@@ -19,25 +19,18 @@ class FavoriteFireResource {
 
   Future<DocumentReference> addFavorite(String recipeId) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    FavoriteModel favorite = FavoriteModel.fromJson({ 'target' : recipeId });
-    favorite.userId = user.uid;
-    favorite.createdAt = DateTime.now();
-    
-    DocumentReference favRef = await Firestore.instance.collection(_doc).add(favorite.toJson());
-    recipeResource.attachFavorite(recipeId, favRef.documentID);
-    return favRef;
+    return recipeResource.attachFavorite(recipeId, user.uid);
   }
 
-  void removeFavorite(String recipeId, String favoriteId) async {
-      await Firestore.instance.collection(_doc).document(favoriteId).delete();
-      recipeResource.detachFavorite(recipeId, favoriteId);
+  void removeFavorite(String recipeId) async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+      return recipeResource.detachFavorite(recipeId, user.uid);
   }
   
-  Stream<QuerySnapshot> getFavorites(String target) {
-    return Firestore.instance.collection(_doc)
-      .where('target', isEqualTo: target)
-      .snapshots();
-  }
+  Stream<QuerySnapshot> getFavorites(target) =>  Firestore.instance.collection(_doc).where('target', isEqualTo: target).snapshots();
+
+  Stream<DocumentSnapshot> getOwnFavorites(target, uid) =>  Firestore.instance.collection('recipes').document(target).snapshots();
+  
 
 
 }
