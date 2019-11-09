@@ -33,7 +33,7 @@ class RecipeListCard extends StatelessWidget {
                 children: <Widget>[
                   Text(_recipe.title),
                   SizedBox(height: 8.0),
-                  Text('Secondary Text'),
+                  Text('${_recipe.subtitle}'),
                   Divider(),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,

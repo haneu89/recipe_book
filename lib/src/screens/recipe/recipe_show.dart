@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_book/src/resources/comment_fire_resource.dart';
+import 'package:flutter_html/flutter_html.dart';
 import '../../widgets/ui_elements/ui_element.dart';
 import '../../widgets/ui_elements/elements.dart';
 
@@ -35,6 +36,7 @@ class _RecipeShowState extends State<RecipeShow> {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     setState(() {
       uid = user.uid;
+      print(uid);
     });
   }
 
@@ -131,16 +133,15 @@ class _RecipeShowState extends State<RecipeShow> {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
                 ),
                 Text(
-                  'sub title',
+                  snapshot.data['subtitle'],
                   textAlign: TextAlign.start,
                 )
               ],
             ),
           ),
           Panel(
-              child: Text(
-            'sub title',
-            textAlign: TextAlign.start,
+              child: Html(
+            data: snapshot.data['content'],
           )),
           SizedBox(
             height: 8,

@@ -2,6 +2,8 @@ class RecipeModel {
   String id;
   String image;
   String title;
+  String subtitle;
+  String content;
   int cookingtime;
   int commentCount;
   int favoriteCount;
@@ -10,6 +12,8 @@ class RecipeModel {
     id = parsedJson['id'];
     image = parsedJson['image'];
     title = parsedJson['title'];
+    subtitle = parsedJson['subtitle'];
+    content = parsedJson['content'];
     cookingtime = parsedJson['cookingtime'];
     commentCount = 0;
     favoriteCount = 0;
@@ -18,6 +22,8 @@ class RecipeModel {
     id = snapshot.documentID;
     image = snapshot['image'];
     title = snapshot['title'];
+    subtitle = snapshot['subtitle'];
+    content = snapshot['content'];
     cookingtime = snapshot['cookingtime'];
     List<dynamic> comList = snapshot['comments'];
     commentCount = (comList != null) ? comList.length : 0 ;
