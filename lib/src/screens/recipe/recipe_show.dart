@@ -35,7 +35,6 @@ class _RecipeShowState extends State<RecipeShow> {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     setState(() {
       uid = user.uid;
-      print(uid);
     });
   }
 
@@ -95,9 +94,7 @@ class _RecipeShowState extends State<RecipeShow> {
         stream: commentResource.getComments(widget.recipeId),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snap) {
           if (!snap.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+            return Spinner();
           }
 
           List<ListTile> commentList =
@@ -145,6 +142,9 @@ class _RecipeShowState extends State<RecipeShow> {
             'sub title',
             textAlign: TextAlign.start,
           )),
+          SizedBox(
+            height: 8,
+          ),
         ],
       ),
     );

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:recipe_book/src/models/recipe_model.dart';
 
 class RecipeListCard extends StatelessWidget {
-  final RecipeModel snapshot;
+  final RecipeModel _recipe;
 
-  RecipeListCard(this.snapshot);
+  RecipeListCard(this._recipe);
   
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class RecipeListCard extends StatelessWidget {
       child: InkWell(
         splashColor: Colors.blue.withAlpha(30),
         onTap: () {
-          Navigator.pushNamed(context, 'recipe/${snapshot.id}');
+          Navigator.pushNamed(context, 'recipe/${_recipe.id}');
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -22,7 +22,7 @@ class RecipeListCard extends StatelessWidget {
             AspectRatio(
               aspectRatio: 18 / 11,
               child: Image.network(
-                snapshot.image,
+                _recipe.image,
                 fit: BoxFit.fitWidth,
               ),
             ),
@@ -31,7 +31,7 @@ class RecipeListCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(snapshot.title),
+                  Text(_recipe.title),
                   SizedBox(height: 8.0),
                   Text('Secondary Text'),
                   Divider(),
@@ -40,15 +40,15 @@ class RecipeListCard extends StatelessWidget {
                     children: <Widget>[
                       Icon(Icons.timer, color: Colors.black, size: 12,),
                       SizedBox(width: 5,),
-                      Text("30", style: TextStyle(color: Colors.black),),
+                      Text("${_recipe.cookingtime}", style: TextStyle(color: Colors.black),),
                       SizedBox(width: 5,),
                       Icon(Icons.comment, color: Colors.black, size: 12,),
                       SizedBox(width: 5,),
-                      Text("${snapshot.commentCount}", style: TextStyle(color: Colors.black),),
+                      Text("${_recipe.commentCount}", style: TextStyle(color: Colors.black),),
                       SizedBox(width: 5,),
                       Icon(Icons.bookmark_border, color: Colors.black, size: 12,),
                       SizedBox(width: 5,),
-                      Text("${snapshot.favoriteCount}", style: TextStyle(color: Colors.black),),
+                      Text("${_recipe.favoriteCount}", style: TextStyle(color: Colors.black),),
                     ],
                   )
                 ],
