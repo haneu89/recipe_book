@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../src/screens/recipe/recipe_list.dart';
 import '../src/screens/recipe/recipe_show.dart';
 import '../src/screens/bookmark/bookmark_list.dart';
+import '../src/screens/base/config_screen.dart';
+import '../src/screens/user/user_profile.dart';
 
 
 class MyApp extends StatelessWidget {
@@ -21,6 +23,8 @@ class MyApp extends StatelessWidget {
       routes: {
         'recipe': (context) => RecipeList(),
         'bookmark': (context) => BookMarkList(),
+        'config': (context) => ConfigScreen(),
+        'user': (context) => UserProfile(),
       },
       onGenerateRoute: _onGeneratedRoute,
     );

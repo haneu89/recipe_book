@@ -41,14 +41,14 @@ class RecipeDrawer extends StatelessWidget {
             leading: Icon(Icons.account_circle),
             title: Text('Account'),
             onTap: () {
-              _moveRoute(context, 'bookmark');
+              Navigator.pushNamed(context, 'user');
             },
           ),
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Setting'),
             onTap: () {
-              _moveRoute(context, 'bookmark');
+              Navigator.pushNamed(context, 'config');
             },
           ),
         ],
