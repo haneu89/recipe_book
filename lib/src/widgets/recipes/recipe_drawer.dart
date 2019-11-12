@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../../widgets/ui_elements/ui_element.dart';
 
 class RecipeDrawer extends StatelessWidget {
   const RecipeDrawer({Key key}) : super(key: key);
@@ -9,28 +11,38 @@ class RecipeDrawer extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          UserAccountsDrawerHeader(
-            accountEmail: Text('mail@jinhyung.kim'),
-            accountName: Text('jinhyung kim'),
-            currentAccountPicture: CircleAvatar(
-              backgroundColor: Theme.of(context).platform == TargetPlatform.iOS
-                  ? Colors.blue
-                  : Colors.white,
-              child: Text(
-                "A",
-                style: TextStyle(fontSize: 40.0),
-              ),
-            ),
+          StreamBuilder<FirebaseUser>(
+            stream: FirebaseAuth.instance.onAuthStateChanged,
+            builder: (builderContext, snapshot) {
+              if (!snapshot.hasData) {
+                return Spinner();
+              }
+              FirebaseUser user = snapshot.data;
+
+              return UserAccountsDrawerHeader(
+                accountEmail: Text(user.email ?? ''),
+                accountName: Text(user.displayName ?? ''),
+                currentAccountPicture: CircleAvatar(
+                  backgroundColor: Theme.of(context).platform == TargetPlatform.iOS
+                      ? Colors.blue
+                      : Colors.white,
+                  child: Text(
+                    "A",
+                    style: TextStyle(fontSize: 40.0),
+                  ),
+                ),
+              );
+            }
           ),
           ListTile(
-            leading: Icon(Icons.bookmark_border),
+            leading: Icon(Icons.home),
             title: Text('메인화면'),
             onTap: () {
               _moveRoute(context, 'recipe');
             },
           ),
           ListTile(
-            leading: Icon(Icons.bookmark_border),
+            leading: Icon(Icons.bookmark),
             title: Text('즐겨찾기 보기'),
             onTap: () {
               _moveRoute(context, 'bookmark');
@@ -39,14 +51,14 @@ class RecipeDrawer extends StatelessWidget {
           Divider(),
           ListTile(
             leading: Icon(Icons.account_circle),
-            title: Text('Account'),
+            title: Text('회원정보 수정'),
             onTap: () {
               Navigator.pushNamed(context, 'user');
             },
           ),
           ListTile(
             leading: Icon(Icons.settings),
-            title: Text('Setting'),
+            title: Text('설정'),
             onTap: () {
               Navigator.pushNamed(context, 'config');
             },

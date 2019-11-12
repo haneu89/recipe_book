@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../widgets/ui_elements/ui_element.dart';
 
-final FirebaseAuth _auth = FirebaseAuth.instance;
-
 class UserProfile extends StatefulWidget {
   const UserProfile({Key key}) : super(key: key);
 
@@ -26,7 +24,7 @@ class _UserProfileState extends State<UserProfile> {
           if (!snapshot.hasData) {
             return Spinner();
           }
-          FirebaseUser user = snapshot.data;
+          FirebaseUser user = snapshot.data;  
 
           return ListView(
             children: <Widget>[
@@ -55,7 +53,7 @@ class _UserProfileState extends State<UserProfile> {
                         children: <Widget>[
                           Text('이름', style: TextStyle(fontSize: 12),),
                           SizedBox(height: 5,),
-                          Text((user.displayName == '') ? '이름없음' : user.displayName , style: TextStyle(fontSize: 18),),
+                          Text(user.displayName ?? '', style: TextStyle(fontSize: 18),),
                         ],
                       ),
                       trailing: IconButton(icon:Icon(Icons.edit), onPressed: () {
