@@ -19,21 +19,20 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  // onResume내 context가 참조가 다른 문제를 해결하기 위하여 참조
+  final navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   void initState() {
     super.initState();
+
     _firebaseMessaging.subscribeToTopic('new');
 
     _firebaseMessaging.configure(
         onLaunch: (Map<String, dynamic> message) async {
-      print("on launch : $message");
     }, onMessage: (Map<String, dynamic> message) async {
-      print('on message : $message');
-      // Navigator.of(context).pushNamed(message['data']['screen']);
     }, onResume: (Map<String, dynamic> message) async {
-      print('on resume : $message');
-      Navigator.of(context).pushNamed(message['data']['screen']);
+      navigatorKey.currentState.pushNamed(message['data']['screen']);
     }, 
     );
   }
@@ -41,6 +40,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
