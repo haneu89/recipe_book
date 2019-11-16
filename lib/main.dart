@@ -17,9 +17,14 @@ void main() async {
   // print(user.uid);
 
   if(user == null) {
+    // 최초 가입시
     AuthResult authResult = await _auth.signInAnonymously();
+
+    UserUpdateInfo updateUser = UserUpdateInfo();
+    updateUser.displayName = user.uid.substring(1, 6);
+    await user.updateProfile(updateUser);
+
     _firebaseMessaging.subscribeToTopic('new');
-    // print(authResult);
   }
 
   
