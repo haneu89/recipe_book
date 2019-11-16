@@ -26,8 +26,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    _firebaseMessaging.subscribeToTopic('new');
-
     _firebaseMessaging.configure(
         onLaunch: (Map<String, dynamic> message) async {
     }, onMessage: (Map<String, dynamic> message) async {

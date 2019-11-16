@@ -18,6 +18,7 @@ void main() async {
 
   if(user == null) {
     AuthResult authResult = await _auth.signInAnonymously();
+    _firebaseMessaging.subscribeToTopic('new');
     // print(authResult);
   }
 
