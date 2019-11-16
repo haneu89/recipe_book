@@ -102,7 +102,8 @@ class _RecipeShowState extends State<RecipeShow> {
           List<ListTile> commentList =
               snap.data.documents.map((DocumentSnapshot document) {
             return ListTile(
-              title: Text('${document['content']}'),
+              title: Text('${document['name']}'),
+              subtitle: Text('${document['content']}'),
             );
           }).toList();
           children.addAll(commentList);

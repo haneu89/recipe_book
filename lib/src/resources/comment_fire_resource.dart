@@ -20,6 +20,7 @@ class CommentFireResource {
   Future<DocumentReference> createComment(CommentModel comment) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     comment.userId = user.uid;
+    comment.name = user.displayName;
     comment.createdAt = DateTime.now();
 
     DocumentReference comRef = await Firestore.instance.collection(_doc).add(comment.toJson());
