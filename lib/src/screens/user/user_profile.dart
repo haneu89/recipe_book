@@ -17,23 +17,25 @@ class UserProfile extends StatefulWidget {
 class _UserProfileState extends State<UserProfile> {
   TextEditingController _textFieldController = TextEditingController();
   final String fileName = Random().nextInt(10000).toString();
+  bool isLoading = false;
 
   Future getImage(context, source) async {
     File image = await ImagePicker.pickImage(source: source);
     FirebaseUser curUser = await FirebaseAuth.instance.currentUser();
     UserUpdateInfo updateUser = UserUpdateInfo();
-    updateUser.photoUrl = await uploadImage(image);
+    updateUser.photoUrl = await uploadImage(image, context);
     await curUser.updateProfile(updateUser);
-
-    Navigator.pop(context);
+    setState(() => isLoading = false);
   }
 
-  Future<String> uploadImage(File image) async {
+  Future<String> uploadImage(File image, context) async {
     StorageReference storageReference = FirebaseStorage.instance.ref().child('test/${fileName}_${basename(image.path)}');
     StorageUploadTask uploadTask = storageReference.putFile(image);
+    setState(() => isLoading = true);
+    Navigator.of(context).pop(context);
     await uploadTask.onComplete;    
     return storageReference.getDownloadURL().then((fileURL) {
-     return fileURL;
+      return fileURL;
    });
   }
 
@@ -78,7 +80,7 @@ class _UserProfileState extends State<UserProfile> {
       appBar: AppBar(
         title: Text('회원 정보'),
       ),
-      body: StreamBuilder<FirebaseUser>(
+      body: (isLoading) ? Spinner() : StreamBuilder<FirebaseUser>(
           stream: FirebaseAuth.instance.onAuthStateChanged,
           builder: (builderContext, snapshot) {
             if (!snapshot.hasData) {
