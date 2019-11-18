@@ -21,7 +21,7 @@ void main() async {
     AuthResult authResult = await _auth.signInAnonymously();
 
     UserUpdateInfo updateUser = UserUpdateInfo();
-    updateUser.displayName = user.uid.substring(1, 6);
+    updateUser.displayName = authResult.user.uid.substring(1, 6);
     await user.updateProfile(updateUser);
 
     _firebaseMessaging.subscribeToTopic('new');
