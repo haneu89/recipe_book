@@ -18,7 +18,7 @@ class RecipeDrawer extends StatelessWidget {
                 return Spinner();
               }
               FirebaseUser user = snapshot.data;
-              String photoUrl = (user.photoUrl) ?? '//placehold.it/32x32';
+              String photoUrl = (user.photoUrl) ?? 'https://placehold.it/32x32';
 
 
               return UserAccountsDrawerHeader(

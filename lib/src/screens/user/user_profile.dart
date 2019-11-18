@@ -29,50 +29,17 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   Future<String> uploadImage(File image, context) async {
-    StorageReference storageReference = FirebaseStorage.instance.ref().child('test/${fileName}_${basename(image.path)}');
+    StorageReference storageReference = FirebaseStorage.instance
+        .ref()
+        .child('profile/${fileName}_${basename(image.path)}');
     StorageUploadTask uploadTask = storageReference.putFile(image);
     setState(() => isLoading = true);
     Navigator.of(context).pop(context);
-    await uploadTask.onComplete;    
+    await uploadTask.onComplete;
     return storageReference.getDownloadURL().then((fileURL) {
       return fileURL;
-   });
+    });
   }
-
-  void _openImagePicker(BuildContext context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context) {
-          return Container(
-            height: 150.0,
-            padding: EdgeInsets.all(10.0),
-            child: Column(children: [
-              Text(
-                'Pick an Image',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              FlatButton(
-                textColor: Theme.of(context).primaryColor,
-                child: Text('Use Camera'),
-                onPressed: () {
-                  getImage(context, ImageSource.camera);
-                },
-              ),
-              FlatButton(
-                textColor: Theme.of(context).primaryColor,
-                child: Text('Use Gallery'),
-                onPressed: () {
-                  getImage(context, ImageSource.gallery);
-                },
-              )
-            ]),
-          );
-        });
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -80,68 +47,77 @@ class _UserProfileState extends State<UserProfile> {
       appBar: AppBar(
         title: Text('회원 정보'),
       ),
-      body: (isLoading) ? Spinner() : StreamBuilder<FirebaseUser>(
-          stream: FirebaseAuth.instance.onAuthStateChanged,
-          builder: (builderContext, snapshot) {
-            if (!snapshot.hasData) {
-              return Spinner();
-            }
-            FirebaseUser user = snapshot.data;
-            String photoUrl = (user.photoUrl) ?? '//placehold.it/32x32';
+      body: (isLoading)
+          ? Spinner()
+          : StreamBuilder<FirebaseUser>(
+              stream: FirebaseAuth.instance.onAuthStateChanged,
+              builder: (builderContext, snapshot) {
+                if (!snapshot.hasData) {
+                  return Spinner();
+                }
+                FirebaseUser user = snapshot.data;
+                String photoUrl =
+                    (user.photoUrl) ?? 'https://placehold.it/32x32';
 
-            return ListView(
-              children: <Widget>[
-                Container(
-                  height: 180,
-                  color: Theme.of(context).accentColor,
-                  alignment: Alignment(0, 0),
-                  child: InkWell(
-                    onTap: () { _openImagePicker(context); },
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: NetworkImage(photoUrl),
-                      backgroundColor: Colors.white,
+                return ListView(
+                  children: <Widget>[
+                    Container(
+                      height: 180,
+                      color: Theme.of(context).accentColor,
+                      alignment: Alignment(0, 0),
+                      child: InkWell(
+                        onTap: () {
+                          ImgPic.bottomImagePicker(context, useCamera: () {
+                            getImage(context, ImageSource.camera);
+                          }, useGallery: () {
+                            getImage(context, ImageSource.gallery);
+                          });
+                        },
+                        child: CircleAvatar(
+                          radius: 50,
+                          backgroundImage: NetworkImage(photoUrl),
+                          backgroundColor: Colors.white,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Container(
-                  height: 8,
-                  color: Theme.of(context).backgroundColor,
-                ),
-                Container(
-                  padding: EdgeInsets.all(20),
-                  child: Column(
-                    children: <Widget>[
-                      ListTile(
-                          leading: Icon(Icons.person),
-                          title: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                '이름',
-                                style: TextStyle(fontSize: 12),
+                    Container(
+                      height: 8,
+                      color: Theme.of(context).backgroundColor,
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      child: Column(
+                        children: <Widget>[
+                          ListTile(
+                              leading: Icon(Icons.person),
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    '이름',
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    user.displayName ?? '',
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                ],
                               ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                user.displayName ?? '',
-                                style: TextStyle(fontSize: 18),
-                              ),
-                            ],
-                          ),
-                          trailing: IconButton(
-                            icon: Icon(Icons.edit),
-                            onPressed: () {
-                              _displayDialog(context);
-                            },
-                          )),
-                    ],
-                  ),
-                )
-              ],
-            );
-          }),
+                              trailing: IconButton(
+                                icon: Icon(Icons.edit),
+                                onPressed: () {
+                                  _displayDialog(context);
+                                },
+                              )),
+                        ],
+                      ),
+                    )
+                  ],
+                );
+              }),
     );
   }
 
@@ -172,9 +148,7 @@ class _UserProfileState extends State<UserProfile> {
               ),
               FlatButton(
                 child: Text('CANCEL'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+                onPressed: () => Navigator.of(context).pop(),
               )
             ],
           );
