@@ -22,7 +22,7 @@ void main() async {
 
     UserUpdateInfo updateUser = UserUpdateInfo();
     updateUser.displayName = authResult.user.uid.substring(1, 6);
-    await user.updateProfile(updateUser);
+    await authResult.user.updateProfile(updateUser);
 
     _firebaseMessaging.subscribeToTopic('new');
   }
