@@ -18,18 +18,14 @@ class RecipeDrawer extends StatelessWidget {
                 return Spinner();
               }
               FirebaseUser user = snapshot.data;
+              String photoUrl = (user.photoUrl) ?? '//placehold.it/32x32';
+
 
               return UserAccountsDrawerHeader(
                 accountEmail: Text(user.email ?? ''),
                 accountName: Text(user.displayName ?? ''),
                 currentAccountPicture: CircleAvatar(
-                  backgroundColor: Theme.of(context).platform == TargetPlatform.iOS
-                      ? Colors.blue
-                      : Colors.white,
-                  child: Text(
-                    "A",
-                    style: TextStyle(fontSize: 40.0),
-                  ),
+                  backgroundImage: NetworkImage(photoUrl),
                 ),
               );
             }
