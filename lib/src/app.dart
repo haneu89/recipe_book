@@ -8,6 +8,7 @@ import '../src/screens/user/user_profile.dart';
 
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
+
 class MyApp extends StatefulWidget {
 
   final String initialRoute;
