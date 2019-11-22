@@ -23,6 +23,20 @@ class _RecipeShowState extends State<RecipeShow> {
   CommentFireResource commentResource = CommentFireResource();
   FavoriteFireResource favoriteResource = FavoriteFireResource();
   final _commentContentController = TextEditingController();
+  ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = new ScrollController();
+    _scrollController.addListener(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,38 +64,105 @@ class _RecipeShowState extends State<RecipeShow> {
                     }
                     List favoritList = favSnapshot.data.data['favorits'] ?? [];
                     bool isAlreadyFav = favoritList.contains(user.uid);
+
                     return Scaffold(
-                      appBar: AppBar(
-                        title: Text('${snapshot.data['title']}'),
-                        actions: <Widget>[
-                          IconButton(
-                              onPressed: () {
-                                (isAlreadyFav)
-                                    ? favoriteResource
-                                        .removeFavorite(widget.recipeId)
-                                    : favoriteResource
-                                        .addFavorite(widget.recipeId);
-                              },
-                              icon: (isAlreadyFav)
-                                  ? Icon(Icons.bookmark)
-                                  : Icon(Icons.bookmark_border))
-                        ],
-                      ),
-                      body: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      body: Stack(
                         children: <Widget>[
-                          Expanded(
-                            child: _buildCustomList(context, snapshot),
+                          NestedScrollView(
+                            controller: _scrollController,
+                            headerSliverBuilder: (BuildContext context,
+                                bool innerBoxIsScrolled) {
+                              return <Widget>[
+                                SliverAppBar(
+                                  expandedHeight: 300.0,
+                                  floating: false,
+                                  pinned: true,
+                                  flexibleSpace: FlexibleSpaceBar(
+                                      centerTitle: true,
+                                      background: Image.network(
+                                        snapshot.data['image'],
+                                        fit: BoxFit.cover,
+                                      )),
+                                  actions: <Widget>[
+                                    IconButton(
+                                        onPressed: () {
+                                          (isAlreadyFav)
+                                              ? favoriteResource.removeFavorite(
+                                                  widget.recipeId)
+                                              : favoriteResource
+                                                  .addFavorite(widget.recipeId);
+                                        },
+                                        icon: (isAlreadyFav)
+                                            ? Icon(Icons.bookmark)
+                                            : Icon(Icons.bookmark_border))
+                                  ],
+                                ),
+                              ];
+                            },
+                            body: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Expanded(
+                                  child: _buildCustomList(context, snapshot),
+                                ),
+                                CommentBar(() {
+                                  _commentWrite(context);
+                                }, _commentContentController),
+                              ],
+                            ),
                           ),
-                          CommentBar(() {
-                            _commentWrite(context);
-                          }, _commentContentController),
+                          buildCap(context),
                         ],
                       ),
                     );
                   });
             });
       },
+    );
+  }
+
+  Widget buildCap(context) {
+    var size = MediaQuery.of(context).size;
+
+    final double defaultTopMargin = 300.0 - 15;
+    //pixels from top where scaling should start
+    final double scaleStart = 60.0;
+    //pixels from top where scaling should end
+    final double scaleEnd = scaleStart / 2;
+
+    double top = defaultTopMargin;
+    double scale = 1.0;
+    if (_scrollController.hasClients) {
+      double offset = _scrollController.offset;
+      top -= offset;
+      if (offset < defaultTopMargin - scaleStart) {
+        //offset small => don't scale down
+        scale = 1.0;
+      } else if (offset < defaultTopMargin - scaleEnd) {
+        //offset between scaleStart and scaleEnd => scale down
+        scale = (defaultTopMargin - scaleEnd - offset) / scaleEnd;
+      } else {
+        //offset passed scaleEnd => hide fab
+        scale = 0.0;
+      }
+    }
+
+    return Positioned(
+      top: top,
+      child: Transform(
+        alignment: Alignment.bottomCenter,
+        transform: Matrix4.identity()..scale(scale),
+        child: Container(
+          height: 40,
+          width: size.width,
+          decoration: BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(40),
+                topRight: Radius.circular(40),
+              )),
+        ),
+      ),
     );
   }
 
@@ -104,7 +185,12 @@ class _RecipeShowState extends State<RecipeShow> {
             );
           }).toList();
           children.addAll(commentList);
-          return ListView(children: children);
+          return ListView(
+            children: children,
+            padding: EdgeInsets.only(
+              top: 0,
+            ),
+          );
         });
   }
 
@@ -114,13 +200,6 @@ class _RecipeShowState extends State<RecipeShow> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          AspectRatio(
-            aspectRatio: 18 / 11,
-            child: Image.network(
-              snapshot.data['image'],
-              fit: BoxFit.fitWidth,
-            ),
-          ),
           Panel(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
