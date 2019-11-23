@@ -9,8 +9,7 @@ class Panel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(8, 8, 8, 0),
-      padding: EdgeInsets.all(8.0),
+      padding: EdgeInsets.symmetric(horizontal: 35,),
       color: Colors.white,
       child: child
     );

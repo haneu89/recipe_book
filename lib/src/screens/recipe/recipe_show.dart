@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_book/src/resources/comment_fire_resource.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:recipe_book/src/widgets/recipes/recipe_detail.dart';
 import '../../widgets/ui_elements/ui_element.dart';
-import '../../widgets/ui_elements/elements.dart';
 
 import '../../widgets/ui_elements/comment_bar.dart';
 import '../../resources/recipe_fire_resource.dart';
@@ -156,7 +155,7 @@ class _RecipeShowState extends State<RecipeShow> {
           height: 40,
           width: size.width,
           decoration: BoxDecoration(
-              color: Colors.blue,
+              color: Colors.white,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(40),
                 topRight: Radius.circular(40),
@@ -168,7 +167,7 @@ class _RecipeShowState extends State<RecipeShow> {
 
   Widget _buildCustomList(context, snapshot) {
     final children = <Widget>[];
-    children.add(_recipeDetail(snapshot));
+    children.add(RecipeDetail(snapshot));
 
     return StreamBuilder<QuerySnapshot>(
         stream: commentResource.getComments(widget.recipeId),
@@ -194,39 +193,6 @@ class _RecipeShowState extends State<RecipeShow> {
         });
   }
 
-  Widget _recipeDetail(snapshot) {
-    return Container(
-      color: Colors.black12,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Panel(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  snapshot.data['title'],
-                  textAlign: TextAlign.start,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
-                ),
-                Text(
-                  snapshot.data['subtitle'],
-                  textAlign: TextAlign.start,
-                )
-              ],
-            ),
-          ),
-          Panel(
-              child: Html(
-            data: snapshot.data['content'],
-          )),
-          SizedBox(
-            height: 8,
-          ),
-        ],
-      ),
-    );
-  }
 
   void _commentWrite(context) async {
     CommentModel comment = CommentModel.fromJson(
