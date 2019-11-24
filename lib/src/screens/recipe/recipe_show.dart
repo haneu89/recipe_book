@@ -81,9 +81,12 @@ class _RecipeShowState extends State<RecipeShow> {
                                   pinned: true,
                                   flexibleSpace: FlexibleSpaceBar(
                                       centerTitle: true,
-                                      background: Image.network(
-                                        recipemodel.image,
-                                        fit: BoxFit.cover,
+                                      background: Hero(
+                                        tag: recipemodel.id,
+                                        child: Image.network(
+                                          recipemodel.image,
+                                          fit: BoxFit.cover,
+                                        ),
                                       )),
                                   actions: <Widget>[
                                     IconButton(

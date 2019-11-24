@@ -5,10 +5,9 @@ class RecipeListCard extends StatelessWidget {
   final RecipeModel _recipe;
 
   RecipeListCard(this._recipe);
-  
+
   @override
   Widget build(BuildContext context) {
-
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -21,9 +20,12 @@ class RecipeListCard extends StatelessWidget {
           children: <Widget>[
             AspectRatio(
               aspectRatio: 18 / 11,
-              child: Image.network(
-                _recipe.image,
-                fit: BoxFit.fitWidth,
+              child: Hero(
+                tag: _recipe.id,
+                child: Image.network(
+                  _recipe.image,
+                  fit: BoxFit.fitWidth,
+                ),
               ),
             ),
             Padding(
@@ -38,17 +40,48 @@ class RecipeListCard extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Icon(Icons.timer, color: Colors.black, size: 12,),
-                      SizedBox(width: 5,),
-                      Text("${_recipe.cookingtime}", style: TextStyle(color: Colors.black),),
-                      SizedBox(width: 5,),
-                      Icon(Icons.comment, color: Colors.black, size: 12,),
-                      SizedBox(width: 5,),
-                      Text("${_recipe.commentCount}", style: TextStyle(color: Colors.black),),
-                      SizedBox(width: 5,),
-                      Icon(Icons.bookmark_border, color: Colors.black, size: 12,),
-                      SizedBox(width: 5,),
-                      Text("${_recipe.favoriteCount}", style: TextStyle(color: Colors.black),),
+                      Icon(
+                        Icons.timer,
+                        color: Colors.black,
+                        size: 12,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "${_recipe.cookingtime}",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Icon(
+                        Icons.comment,
+                        color: Colors.black,
+                        size: 12,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "${_recipe.commentCount}",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Icon(
+                        Icons.bookmark_border,
+                        color: Colors.black,
+                        size: 12,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "${_recipe.favoriteCount}",
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ],
                   )
                 ],

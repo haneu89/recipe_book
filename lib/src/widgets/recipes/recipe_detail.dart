@@ -76,7 +76,7 @@ class RecipeDetail extends StatelessWidget {
             data: recipe.content,
           )),
           SizedBox(
-            height: 8,
+            height: 30,
           ),
           Panel(
             child: Text(
