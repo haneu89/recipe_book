@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:recipe_book/src/models/recipe_model.dart';
 import 'package:recipe_book/src/widgets/ui_elements/elements.dart';
 import 'package:recipe_book/src/widgets/ui_elements/info_box.dart';
 
 class RecipeDetail extends StatelessWidget {
-  final dynamic snapshot;
-  RecipeDetail(this.snapshot, {Key key}) : super(key: key);
+  final RecipeModel recipe;
+  RecipeDetail(this.recipe, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class RecipeDetail extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  snapshot.data['title'],
+                  recipe.title,
                   textAlign: TextAlign.start,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28.0),
                 ),
@@ -27,7 +28,7 @@ class RecipeDetail extends StatelessWidget {
                   height: 5,
                 ),
                 Text(
-                  snapshot.data['subtitle'],
+                  recipe.subtitle,
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -38,7 +39,7 @@ class RecipeDetail extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 15,
+            height: 30,
           ),
           Panel(
             child: Row(
@@ -46,7 +47,7 @@ class RecipeDetail extends StatelessWidget {
               children: <Widget>[
                 InfoBar(
                   subject: '조리 시간',
-                  text: "${snapshot.data['cookingtime']}",
+                  text: "${recipe.cookingtime}",
                 ),
                 InfoBar(
                   subject: '의견 수',
@@ -72,10 +73,20 @@ class RecipeDetail extends StatelessWidget {
           ),
           Panel(
               child: Html(
-            data: snapshot.data['content'],
+            data: recipe.content,
           )),
           SizedBox(
             height: 8,
+          ),
+          Panel(
+            child: Text(
+              '댓글',
+              textAlign: TextAlign.start,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28.0),
+            ),
+          ),
+          SizedBox(
+            height: 30,
           ),
         ],
       ),

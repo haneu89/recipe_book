@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:recipe_book/src/models/recipe_model.dart';
 import 'package:recipe_book/src/resources/comment_fire_resource.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:recipe_book/src/widgets/comment/comment_list.dart';
 import 'package:recipe_book/src/widgets/recipes/recipe_detail.dart';
 import '../../widgets/ui_elements/ui_element.dart';
 
@@ -53,6 +55,7 @@ class _RecipeShowState extends State<RecipeShow> {
               if (!snapshot.hasData) {
                 return Spinner();
               }
+              RecipeModel recipemodel = RecipeModel.fromSnapshot(snapshot.data);
               return StreamBuilder<DocumentSnapshot>(
                   stream: favoriteResource.getOwnFavorites(
                       widget.recipeId, user.uid),
@@ -79,7 +82,7 @@ class _RecipeShowState extends State<RecipeShow> {
                                   flexibleSpace: FlexibleSpaceBar(
                                       centerTitle: true,
                                       background: Image.network(
-                                        snapshot.data['image'],
+                                        recipemodel.image,
                                         fit: BoxFit.cover,
                                       )),
                                   actions: <Widget>[
@@ -102,7 +105,7 @@ class _RecipeShowState extends State<RecipeShow> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Expanded(
-                                  child: _buildCustomList(context, snapshot),
+                                  child: _buildCustomList(context, recipemodel),
                                 ),
                                 CommentBar(() {
                                   _commentWrite(context);
@@ -176,23 +179,22 @@ class _RecipeShowState extends State<RecipeShow> {
             return Spinner();
           }
 
-          List<ListTile> commentList =
-              snap.data.documents.map((DocumentSnapshot document) {
-            return ListTile(
-              title: Text('${document['name']}'),
-              subtitle: Text('${document['content']}'),
-            );
-          }).toList();
+          List<Widget> commentList = snap.data.documents
+              .map((document) => CommentList(document))
+              .toList();
+
           children.addAll(commentList);
-          return ListView(
-            children: children,
-            padding: EdgeInsets.only(
-              top: 0,
+          return ScrollConfiguration(
+            behavior: MyBehavior(),
+            child: ListView(
+              children: children,
+              padding: EdgeInsets.only(
+                top: 0,
+              ),
             ),
           );
         });
   }
-
 
   void _commentWrite(context) async {
     CommentModel comment = CommentModel.fromJson(
@@ -203,5 +205,14 @@ class _RecipeShowState extends State<RecipeShow> {
     _commentContentController.text = '';
     // Focus 해제
     FocusScope.of(context).requestFocus(new FocusNode());
+  }
+}
+
+// 스크롤 모션 제거
+class MyBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child;
   }
 }
