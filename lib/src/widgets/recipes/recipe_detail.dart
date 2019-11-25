@@ -51,9 +51,11 @@ class RecipeDetail extends StatelessWidget {
                 ),
                 InfoBar(
                   subject: '의견 수',
+                  text: "${recipe.commentCount}",
                 ),
                 InfoBar(
                   subject: '즐겨찾기 수',
+                  text: "${recipe.favoriteCount}",
                 ),
               ],
             ),
