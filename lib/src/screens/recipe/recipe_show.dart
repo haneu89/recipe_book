@@ -116,7 +116,7 @@ class _RecipeShowState extends State<RecipeShow> {
                               ],
                             ),
                           ),
-                          buildCap(context),
+                          // buildCap(context),
                         ],
                       ),
                     );
@@ -173,6 +173,7 @@ class _RecipeShowState extends State<RecipeShow> {
 
   Widget _buildCustomList(context, snapshot) {
     final children = <Widget>[];
+    children.add(SizedBox(height: 30,));
     children.add(RecipeDetail(snapshot));
 
     return StreamBuilder<QuerySnapshot>(
