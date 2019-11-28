@@ -25,7 +25,7 @@ class CommentBar extends StatelessWidget {
             ),
           ),
           RaisedButton(
-            child: Text('asdf'),
+            child: Text('쓰기'),
             onPressed: _onPressed,
           )
         ],
