@@ -5,8 +5,6 @@ class CommentList extends StatelessWidget {
   final dynamic document;
   CommentList(this.document, {Key key}) : super(key: key);
 
-  final String photoUrl = 'https://placehold.it/32x32';
-
   @override
   Widget build(BuildContext context) {
     return Panel(
@@ -17,7 +15,7 @@ class CommentList extends StatelessWidget {
             children: <Widget>[
               CircleAvatar(
                 radius: 20,
-                backgroundImage: NetworkImage(photoUrl),
+                backgroundImage: NetworkImage(document['profile'] ?? 'https://placehold.it/32x32'),
                 backgroundColor: Colors.white,
               ),
               SizedBox(

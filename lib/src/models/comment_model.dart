@@ -4,6 +4,7 @@ class CommentModel {
   String content;
   String userId;
   String name;
+  String profile;
   dynamic createdAt;
   
   CommentModel.fromJson(Map<String, dynamic> parsedJson) {
@@ -15,6 +16,7 @@ class CommentModel {
     target = snapshot.target;
     id = snapshot.documentID;
     content = snapshot['content'];
+    profile = snapshot['profile'];
     userId = snapshot['userId'];
     name = snapshot['name'];
   }
@@ -23,6 +25,7 @@ class CommentModel {
     return {
       "target": target,
       "content": content,
+      "profile": profile,
       "userId": userId,
       "createdAt": createdAt,
       "name": name,

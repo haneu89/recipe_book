@@ -21,6 +21,7 @@ class CommentFireResource {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     comment.userId = user.uid;
     comment.name = user.displayName;
+    comment.profile = user.photoUrl;
     comment.createdAt = DateTime.now();
 
     DocumentReference comRef = await Firestore.instance.collection(_doc).add(comment.toJson());
