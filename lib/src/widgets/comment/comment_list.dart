@@ -5,12 +5,45 @@ class CommentList extends StatelessWidget {
   final dynamic document;
   CommentList(this.document, {Key key}) : super(key: key);
 
+  final String photoUrl = 'https://placehold.it/32x32';
+
   @override
   Widget build(BuildContext context) {
     return Panel(
-      child: ListTile(
-        title: Text('${document['name']}'),
-        subtitle: Text('${document['content']}'),
+      child: Column(
+        children: <Widget>[
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              CircleAvatar(
+                radius: 20,
+                backgroundImage: NetworkImage(photoUrl),
+                backgroundColor: Colors.white,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    '${document['name']}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.0,
+                      // color: Color.fromRGBO(216, 216, 216, 1)
+                    ),
+                  ),
+                  Text('${document['content']}'),
+                ],
+              ),
+            ],
+          ),
+          Divider(),
+        ],
       ),
     );
   }
