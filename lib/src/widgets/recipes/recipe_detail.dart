@@ -47,7 +47,7 @@ class RecipeDetail extends StatelessWidget {
               children: <Widget>[
                 InfoBar(
                   subject: '조리 시간',
-                  text: "${recipe.cookingtime}",
+                  text: "${recipe.percent}",
                 ),
                 InfoBar(
                   subject: '의견 수',

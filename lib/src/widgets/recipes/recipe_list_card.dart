@@ -41,7 +41,7 @@ class RecipeListCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Icon(
-                        Icons.timer,
+                        Icons.local_bar,
                         color: Colors.black,
                         size: 12,
                       ),
@@ -49,7 +49,7 @@ class RecipeListCard extends StatelessWidget {
                         width: 5,
                       ),
                       Text(
-                        "${_recipe.cookingtime}",
+                        "${_recipe.percent}",
                         style: TextStyle(color: Colors.black),
                       ),
                       SizedBox(
