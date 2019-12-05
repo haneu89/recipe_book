@@ -46,7 +46,7 @@ class RecipeDetail extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 InfoBar(
-                  subject: '조리 시간',
+                  subject: '알콜 농도',
                   text: "${recipe.percent}",
                 ),
                 InfoBar(
