@@ -15,28 +15,31 @@ class CommentList extends StatelessWidget {
             children: <Widget>[
               CircleAvatar(
                 radius: 20,
-                backgroundImage: NetworkImage(document['profile'] ?? 'https://placehold.it/32x32'),
+                backgroundImage: NetworkImage(
+                    document['profile'] ?? 'https://placehold.it/32x32'),
                 backgroundColor: Colors.white,
               ),
               SizedBox(
                 width: 10,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    '${document['name']}',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16.0,
-                      // color: Color.fromRGBO(216, 216, 216, 1)
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 5,
                     ),
-                  ),
-                  Text('${document['content']}'),
-                ],
+                    Text(
+                      '${document['name']}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                        // color: Color.fromRGBO(216, 216, 216, 1)
+                      ),
+                    ),
+                    Text('${document['content']}'),
+                  ],
+                ),
               ),
             ],
           ),

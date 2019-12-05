@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
       navigatorKey: navigatorKey,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.orange,
         backgroundColor: Colors.black38
       ),
       initialRoute: widget.initialRoute,
