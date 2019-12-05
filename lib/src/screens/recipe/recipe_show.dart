@@ -201,6 +201,10 @@ class _RecipeShowState extends State<RecipeShow> {
   }
 
   void _commentWrite(context) async {
+
+    if(_commentContentController.text == '') {
+      return;
+    }
     CommentModel comment = CommentModel.fromJson(
         {"target": widget.recipeId, 'content': _commentContentController.text});
     commentResource.createComment(comment);
