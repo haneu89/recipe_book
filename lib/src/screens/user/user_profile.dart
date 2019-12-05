@@ -17,7 +17,7 @@ class UserProfile extends StatefulWidget {
 class _UserProfileState extends State<UserProfile> {
   TextEditingController _textFieldController = TextEditingController();
   final String fileName = Random().nextInt(10000).toString();
-  bool isLoading = false;
+  bool loadingImage = false;
 
   Future getImage(context, source) async {
     File image = await ImagePicker.pickImage(source: source);
@@ -25,7 +25,8 @@ class _UserProfileState extends State<UserProfile> {
     UserUpdateInfo updateUser = UserUpdateInfo();
     updateUser.photoUrl = await uploadImage(image, context);
     await curUser.updateProfile(updateUser);
-    setState(() => isLoading = false);
+    await curUser.reload();
+    setState(() => loadingImage = false);
   }
 
   Future<String> uploadImage(File image, context) async {
@@ -33,7 +34,7 @@ class _UserProfileState extends State<UserProfile> {
         .ref()
         .child('profile/${fileName}_${basename(image.path)}');
     StorageUploadTask uploadTask = storageReference.putFile(image);
-    setState(() => isLoading = true);
+    setState(() => loadingImage = true);
     Navigator.of(context).pop(context);
     await uploadTask.onComplete;
     return storageReference.getDownloadURL().then((fileURL) {
@@ -47,9 +48,7 @@ class _UserProfileState extends State<UserProfile> {
       appBar: AppBar(
         title: Text('회원 정보'),
       ),
-      body: (isLoading)
-          ? Spinner()
-          : StreamBuilder<FirebaseUser>(
+      body: StreamBuilder<FirebaseUser>(
               stream: FirebaseAuth.instance.onAuthStateChanged,
               builder: (builderContext, snapshot) {
                 if (!snapshot.hasData) {
@@ -63,7 +62,7 @@ class _UserProfileState extends State<UserProfile> {
                   children: <Widget>[
                     Container(
                       height: 180,
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).primaryColor,
                       alignment: Alignment(0, 0),
                       child: InkWell(
                         onTap: () {
@@ -73,7 +72,7 @@ class _UserProfileState extends State<UserProfile> {
                             getImage(context, ImageSource.gallery);
                           });
                         },
-                        child: CircleAvatar(
+                        child: (loadingImage) ? Spinner() : CircleAvatar(
                           radius: 50,
                           backgroundImage: NetworkImage(photoUrl),
                           backgroundColor: Colors.white,
@@ -141,6 +140,7 @@ class _UserProfileState extends State<UserProfile> {
                   UserUpdateInfo updateUser = UserUpdateInfo();
                   updateUser.displayName = _textFieldController.text;
                   await curUser.updateProfile(updateUser);
+                  await curUser.reload();
 
                   _textFieldController.text = '';
                   Navigator.of(context).pop();
