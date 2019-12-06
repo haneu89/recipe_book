@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
@@ -20,7 +21,6 @@ class _ConfigScreenState extends State<ConfigScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text('설정'),
@@ -31,18 +31,21 @@ class _ConfigScreenState extends State<ConfigScreen> {
           ListTile(
             leading: Icon(Icons.notifications_active),
             title: Text('새글 알림'),
-            trailing: Switch(onChanged: _toggleNotiNew, value: _allowNotiNew,),
+            trailing: Switch(
+              onChanged: _toggleNotiNew,
+              value: _allowNotiNew,
+            ),
             onTap: () {},
           ),
           ListTile(
             leading: Icon(Icons.assignment),
             title: Text('개인정보 처리방침'),
-            onTap: () {},
+            onTap: () { _launchURL('https://recipe-book-e5052.web.app/page/privacy'); },
           ),
           ListTile(
             leading: Icon(Icons.assignment),
             title: Text('이용 약관'),
-            onTap: () {},
+            onTap: () { _launchURL('https://recipe-book-e5052.web.app/page/terms'); },
           ),
           ListTile(
             leading: Icon(Icons.info),
@@ -53,8 +56,19 @@ class _ConfigScreenState extends State<ConfigScreen> {
       )),
     );
   }
+
   _toggleNotiNew(bool newValue) {
-    (newValue) ? _firebaseMessaging.subscribeToTopic('new') : _firebaseMessaging.unsubscribeFromTopic('new');
+    (newValue)
+        ? _firebaseMessaging.subscribeToTopic('new')
+        : _firebaseMessaging.unsubscribeFromTopic('new');
     setState(() => _allowNotiNew = newValue);
+  }
+
+  _launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }
