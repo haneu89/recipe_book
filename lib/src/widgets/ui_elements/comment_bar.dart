@@ -13,10 +13,11 @@ class CommentBar extends StatelessWidget {
       //     border: Border(top: BorderSide(color: Colors.black, width:0.5))),
       child: Row(
         children: <Widget>[
-          IconButton(
-            icon: Icon(Icons.camera_enhance),
-            onPressed: () {},
-          ),
+          // IconButton(
+          //   icon: Icon(Icons.camera_enhance),
+          //   onPressed: () {},
+          // ),
+          SizedBox(width: 10,),
           Expanded(
             child: TextField(
               controller: _commentContentController,
