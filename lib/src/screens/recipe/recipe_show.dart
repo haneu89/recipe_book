@@ -83,9 +83,10 @@ class _RecipeShowState extends State<RecipeShow> {
                                       centerTitle: true,
                                       background: Hero(
                                         tag: recipemodel.id,
-                                        child: Image.network(
-                                          recipemodel.image,
-                                          fit: BoxFit.cover,
+                                        child: FadeInImage.assetNetwork(
+                                          placeholder: 'assets/splash.jpg',
+                                          image: recipemodel.image,
+                                          fit: BoxFit.fitWidth,
                                         ),
                                       )),
                                   actions: <Widget>[
@@ -173,7 +174,9 @@ class _RecipeShowState extends State<RecipeShow> {
 
   Widget _buildCustomList(context, snapshot) {
     final children = <Widget>[];
-    children.add(SizedBox(height: 30,));
+    children.add(SizedBox(
+      height: 30,
+    ));
     children.add(RecipeDetail(snapshot));
 
     return StreamBuilder<QuerySnapshot>(
@@ -201,8 +204,7 @@ class _RecipeShowState extends State<RecipeShow> {
   }
 
   void _commentWrite(context) async {
-
-    if(_commentContentController.text == '') {
+    if (_commentContentController.text == '') {
       return;
     }
     CommentModel comment = CommentModel.fromJson(

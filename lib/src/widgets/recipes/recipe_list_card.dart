@@ -22,10 +22,12 @@ class RecipeListCard extends StatelessWidget {
               aspectRatio: 18 / 11,
               child: Hero(
                 tag: _recipe.id,
-                child: Image.network(
-                  _recipe.image,
+                child: 
+                FadeInImage.assetNetwork(
+                  placeholder: 'assets/splash.jpg',
+                  image: _recipe.image,
                   fit: BoxFit.fitWidth,
-                ),
+                )
               ),
             ),
             Padding(
