@@ -86,7 +86,7 @@ class _RecipeShowState extends State<RecipeShow> {
                                         child: FadeInImage.assetNetwork(
                                           placeholder: 'assets/splash.jpg',
                                           image: recipemodel.image,
-                                          fit: BoxFit.fitWidth,
+                                          fit: BoxFit.cover,
                                         ),
                                       )),
                                   actions: <Widget>[
