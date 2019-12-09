@@ -12,24 +12,25 @@ class RecipeDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           StreamBuilder<FirebaseUser>(
-            stream: FirebaseAuth.instance.onAuthStateChanged,
-            builder: (builderContext, snapshot) {
-              if (!snapshot.hasData) {
-                return Spinner();
-              }
-              FirebaseUser user = snapshot.data;
-              String photoUrl = (user.photoUrl) ?? 'https://placehold.it/32x32';
+              stream: FirebaseAuth.instance.onAuthStateChanged,
+              builder: (builderContext, snapshot) {
+                if (!snapshot.hasData) {
+                  return Spinner();
+                }
+                FirebaseUser user = snapshot.data;
 
-
-              return UserAccountsDrawerHeader(
-                accountEmail: Text(user.email ?? ''),
-                accountName: Text(user.displayName ?? ''),
-                currentAccountPicture: CircleAvatar(
-                  backgroundImage: NetworkImage(photoUrl),
-                ),
-              );
-            }
-          ),
+                return UserAccountsDrawerHeader(
+                  accountEmail: Text(user.email ?? ''),
+                  accountName: Text(user.displayName ?? ''),
+                  currentAccountPicture: Hero(
+                    tag: user.uid,
+                    child: CircleAvatar(
+                        backgroundImage: (user.photoUrl != null)
+                            ? NetworkImage(user.photoUrl)
+                            : AssetImage('assets/placeholder.jpg')),
+                  ),
+                );
+              }),
           ListTile(
             leading: Icon(Icons.home),
             title: Text('메인화면'),

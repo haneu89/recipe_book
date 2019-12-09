@@ -49,74 +49,79 @@ class _UserProfileState extends State<UserProfile> {
         title: Text('회원 정보'),
       ),
       body: StreamBuilder<FirebaseUser>(
-              stream: FirebaseAuth.instance.onAuthStateChanged,
-              builder: (builderContext, snapshot) {
-                if (!snapshot.hasData) {
-                  return Spinner();
-                }
-                FirebaseUser user = snapshot.data;
-                String photoUrl =
-                    (user.photoUrl) ?? 'https://placehold.it/32x32';
+          stream: FirebaseAuth.instance.onAuthStateChanged,
+          builder: (builderContext, snapshot) {
+            if (!snapshot.hasData) {
+              return Spinner();
+            }
+            FirebaseUser user = snapshot.data;
 
-                return ListView(
-                  children: <Widget>[
-                    Container(
-                      height: 180,
-                      color: Theme.of(context).primaryColor,
-                      alignment: Alignment(0, 0),
-                      child: InkWell(
-                        onTap: () {
-                          ImgPic.bottomImagePicker(context, useCamera: () {
-                            getImage(context, ImageSource.camera);
-                          }, useGallery: () {
-                            getImage(context, ImageSource.gallery);
-                          });
-                        },
-                        child: (loadingImage) ? Spinner() : CircleAvatar(
-                          radius: 50,
-                          backgroundImage: NetworkImage(photoUrl),
-                          backgroundColor: Colors.white,
-                        ),
-                      ),
+            return ListView(
+              children: <Widget>[
+                Container(
+                  height: 180,
+                  color: Theme.of(context).primaryColor,
+                  alignment: Alignment(0, 0),
+                  child: InkWell(
+                    onTap: () {
+                      ImgPic.bottomImagePicker(context, useCamera: () {
+                        getImage(context, ImageSource.camera);
+                      }, useGallery: () {
+                        getImage(context, ImageSource.gallery);
+                      });
+                    },
+                    child: Hero(
+                      tag: user.uid,
+                      child: (loadingImage)
+                          ? Spinner()
+                          : CircleAvatar(
+                              radius: 50,
+                              backgroundImage: (user.photoUrl != null)
+                                  ? NetworkImage(user.photoUrl)
+                                  : AssetImage('assets/placeholder.jpg'),
+                              backgroundColor: Colors.white,
+                            ),
                     ),
-                    Container(
-                      height: 8,
-                      color: Theme.of(context).backgroundColor,
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(20),
-                      child: Column(
-                        children: <Widget>[
-                          ListTile(
-                              leading: Icon(Icons.person),
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    '이름',
-                                    style: TextStyle(fontSize: 12),
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    user.displayName ?? '',
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                ],
+                  ),
+                ),
+                Container(
+                  height: 8,
+                  color: Theme.of(context).backgroundColor,
+                ),
+                Container(
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    children: <Widget>[
+                      ListTile(
+                          leading: Icon(Icons.person),
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                '이름',
+                                style: TextStyle(fontSize: 12),
                               ),
-                              trailing: IconButton(
-                                icon: Icon(Icons.edit),
-                                onPressed: () {
-                                  _displayDialog(context);
-                                },
-                              )),
-                        ],
-                      ),
-                    )
-                  ],
-                );
-              }),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                user.displayName ?? '',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            ],
+                          ),
+                          trailing: IconButton(
+                            icon: Icon(Icons.edit),
+                            onPressed: () {
+                              _displayDialog(context);
+                            },
+                          )),
+                    ],
+                  ),
+                )
+              ],
+            );
+          }),
     );
   }
 

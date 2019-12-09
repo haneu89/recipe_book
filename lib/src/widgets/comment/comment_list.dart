@@ -14,11 +14,10 @@ class CommentList extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               CircleAvatar(
-                radius: 20,
-                backgroundImage: NetworkImage(
-                    document['profile'] ?? 'https://placehold.it/32x32'),
-                backgroundColor: Colors.white,
-              ),
+                  radius: 20,
+                  backgroundImage: (document['profile'] != null)
+                      ? NetworkImage(document['profile'])
+                      : AssetImage('assets/placeholder.jpg')),
               SizedBox(
                 width: 10,
               ),
