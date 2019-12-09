@@ -24,7 +24,7 @@ class RecipeListCard extends StatelessWidget {
                 tag: _recipe.id,
                 child: 
                 FadeInImage.assetNetwork(
-                  placeholder: 'assets/splash.jpg',
+                  placeholder: 'assets/placeholder.jpg',
                   image: _recipe.image,
                   fit: BoxFit.fitWidth,
                 )

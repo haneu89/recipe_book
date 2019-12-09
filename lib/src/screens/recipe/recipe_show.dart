@@ -84,7 +84,7 @@ class _RecipeShowState extends State<RecipeShow> {
                                       background: Hero(
                                         tag: recipemodel.id,
                                         child: FadeInImage.assetNetwork(
-                                          placeholder: 'assets/splash.jpg',
+                                          placeholder: 'assets/placeholder.jpg',
                                           image: recipemodel.image,
                                           fit: BoxFit.cover,
                                         ),
