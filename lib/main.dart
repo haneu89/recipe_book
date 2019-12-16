@@ -7,6 +7,8 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
 void main() async {
+  // iOS 오류때문에 추가
+  WidgetsFlutterBinding.ensureInitialized();
 
   String _initialRoute = 'recipe';
 
