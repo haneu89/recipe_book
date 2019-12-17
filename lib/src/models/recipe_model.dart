@@ -27,7 +27,7 @@ class RecipeModel {
     subtitle = snapshot['subtitle'];
     content = snapshot['content'];
     cookingtime = snapshot['cookingtime'];
-    percent = snapshot['percent'];
+    percent = snapshot['percent'].toDouble();
     List<dynamic> comList = snapshot['comments'];
     commentCount = (comList != null) ? comList.length : 0 ;
     List<dynamic> favList = snapshot['favorits'];
