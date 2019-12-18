@@ -30,9 +30,7 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   Future<String> uploadImage(File image, context) async {
-    StorageReference storageReference = FirebaseStorage.instance
-        .ref()
-        .child('profile/${fileName}_${basename(image.path)}');
+    StorageReference storageReference = FirebaseStorage.instance.ref().child('profile/${fileName}_${basename(image.path)}');
     StorageUploadTask uploadTask = storageReference.putFile(image);
     setState(() => loadingImage = true);
     Navigator.of(context).pop(context);
