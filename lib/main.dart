@@ -8,11 +8,11 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
   String _initialRoute = 'recipe';
 
   if (Platform.isIOS) {
-    WidgetsFlutterBinding.ensureInitialized();
     _firebaseMessaging.requestNotificationPermissions();
   }
 
