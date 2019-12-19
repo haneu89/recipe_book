@@ -7,6 +7,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
 import '../../widgets/ui_elements/ui_element.dart';
 
+final FirebaseAuth _fireAuth = FirebaseAuth.instance;
+
 class UserProfile extends StatefulWidget {
   const UserProfile({Key key}) : super(key: key);
 
@@ -18,10 +20,11 @@ class _UserProfileState extends State<UserProfile> {
   TextEditingController _textFieldController = TextEditingController();
   final String fileName = Random().nextInt(10000).toString();
   bool loadingImage = false;
+  bool loadingName = false;
 
   Future getImage(context, source) async {
     File image = await ImagePicker.pickImage(source: source);
-    FirebaseUser curUser = await FirebaseAuth.instance.currentUser();
+    FirebaseUser curUser = await _fireAuth.currentUser();
     UserUpdateInfo updateUser = UserUpdateInfo();
     updateUser.photoUrl = await uploadImage(image, context);
     await curUser.updateProfile(updateUser);
@@ -30,7 +33,9 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   Future<String> uploadImage(File image, context) async {
-    StorageReference storageReference = FirebaseStorage.instance.ref().child('profile/${fileName}_${basename(image.path)}');
+    StorageReference storageReference = FirebaseStorage.instance
+        .ref()
+        .child('profile/${fileName}_${basename(image.path)}');
     StorageUploadTask uploadTask = storageReference.putFile(image);
     setState(() => loadingImage = true);
     Navigator.of(context).pop(context);
@@ -47,7 +52,7 @@ class _UserProfileState extends State<UserProfile> {
         title: Text('회원 정보'),
       ),
       body: StreamBuilder<FirebaseUser>(
-          stream: FirebaseAuth.instance.onAuthStateChanged,
+          stream: _fireAuth.onAuthStateChanged,
           builder: (builderContext, snapshot) {
             if (!snapshot.hasData) {
               return Spinner();
@@ -90,30 +95,32 @@ class _UserProfileState extends State<UserProfile> {
                   padding: EdgeInsets.all(20),
                   child: Column(
                     children: <Widget>[
-                      ListTile(
-                          leading: Icon(Icons.person),
-                          title: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                '이름',
-                                style: TextStyle(fontSize: 12),
+                      (loadingName)
+                          ? Spinner()
+                          : ListTile(
+                              leading: Icon(Icons.person),
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    '이름',
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    user.displayName ?? '',
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                ],
                               ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                user.displayName ?? '',
-                                style: TextStyle(fontSize: 18),
-                              ),
-                            ],
-                          ),
-                          trailing: IconButton(
-                            icon: Icon(Icons.edit),
-                            onPressed: () {
-                              _displayDialog(context);
-                            },
-                          )),
+                              trailing: IconButton(
+                                icon: Icon(Icons.edit),
+                                onPressed: () {
+                                  _displayDialog(context);
+                                },
+                              )),
                     ],
                   ),
                 )
@@ -137,15 +144,15 @@ class _UserProfileState extends State<UserProfile> {
               FlatButton(
                 child: Text('OK'),
                 onPressed: () async {
-                  FirebaseUser curUser =
-                      await FirebaseAuth.instance.currentUser();
+                  FirebaseUser curUser = await _fireAuth.currentUser();
 
                   UserUpdateInfo updateUser = UserUpdateInfo();
                   updateUser.displayName = _textFieldController.text;
+                  setState(() => loadingName = true);
                   await curUser.updateProfile(updateUser);
                   await curUser.reload();
-
                   _textFieldController.text = '';
+                  setState(() => loadingName = false);
                   Navigator.of(context).pop();
                 },
               ),
