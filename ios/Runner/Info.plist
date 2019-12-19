@@ -45,5 +45,9 @@
 	<false/>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>프로필 사진업로드</string>
+	<key>NSCameraUsageDescription</key>
+	<string>프로필 사진 촬영</string>
 </dict>
 </plist>
